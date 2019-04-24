@@ -1,4 +1,4 @@
-### <center>腾讯云 CVM CentOS 系统 kebernetes 集群安装</center>
+### <center>腾讯云 CVM CentOS 系统 kebernetes 集群部署</center>
 
 文档中脚本默认均以 `root` 用户执行
 
@@ -41,7 +41,7 @@
 
 ##### 0. 基础系统配置
 
-+ 系统镜像 `CentOS 7 64bit`
++ 使用自定义系统镜像 `k8s-node` 安装系统
 + 配置基础网络、更新源、SSH登陆等
 + 腾讯云后台创建 CLB
 
