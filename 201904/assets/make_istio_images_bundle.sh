@@ -52,8 +52,8 @@ promAlertmanagerRep=prom/alertmanager:$promAlertmanagerVer
 promNodeExporterVer=v0.15.2
 promNodeExporterRep=prom/node-exporter:$promNodeExporterVer
 
-busyboxVer=latest
-busyboxRep=busybox:$busyboxVer
+busyboxLatestVer=latest
+busyboxLatestRep=busybox:$busyboxLatestVer
 
 configmapReloadVer=v0.1
 configmapReloadRep=jimmidyson/configmap-reload:$configmapReloadVer
@@ -112,7 +112,7 @@ case "$1" in
     docker pull $prometheusRep
     docker pull $promAlertmanagerRep
     docker pull $promNodeExporterRep
-    docker pull $busyboxRep
+    docker pull $busyboxLatestRep
     docker pull $configmapReloadRep
     docker pull $pcurlRep
     docker pull $grafanaRep
@@ -164,8 +164,8 @@ case "$1" in
     echo -e prom/node-exporter
     docker save -o /tmp/${dir}/node-exporter_${promNodeExporterVer}.tar $promNodeExporterRep
 
-    echo -e busybox
-    docker save -o /tmp/${dir}/busybox_${busyboxVer}.tar $busyboxRep
+    echo -e busybox:latest
+    docker save -o /tmp/${dir}/busybox_${busyboxLatestVer}.tar $busyboxLatestRep
 
     echo -e configmap-reload
     docker save -o /tmp/${dir}/configmap-reload_${configmapReloadVer}.tar $configmapReloadRep
@@ -198,6 +198,7 @@ case "$1" in
     echo -e "Step by step cli at deploy node:\n"
     echo -e export alpineVer=$alpineVer
     echo -e export busyboxVer=$busyboxVer
+    echo -e export busyboxLatestVer=$busyboxLatestVer
     echo -e export istioVer=$istioVer
     echo -e export jaegertracingVer=$jaegertracingVer
     echo -e export kialiVer=$kialiVer
@@ -220,7 +221,7 @@ case "$1" in
     echo -e ansible kube-master,kube-node -a \"docker load -i /opt/kube/images/${dir}/prometheus_${prometheusVer}.tar\"
     echo -e ansible kube-master,kube-node -a \"docker load -i /opt/kube/images/${dir}/alertmanager_${promAlertmanagerVer}.tar\"
     echo -e ansible kube-master,kube-node -a \"docker load -i /opt/kube/images/${dir}/node-exporter_${promNodeExporterVer}.tar\"
-    echo -e ansible kube-master,kube-node -a \"docker load -i /opt/kube/images/${dir}/busybox_${busyboxVer}.tar\"
+    echo -e ansible kube-master,kube-node -a \"docker load -i /opt/kube/images/${dir}/busybox_${busyboxLatestVer}.tar\"
     echo -e ansible kube-master,kube-node -a \"docker load -i /opt/kube/images/${dir}/configmap-reload_${configmapReloadVer}.tar\"
     echo -e ansible kube-master,kube-node -a \"docker load -i /opt/kube/images/${dir}/pstauffer_curl_${pcurlVer}.tar\"
     echo -e ansible kube-master,kube-node -a \"docker load -i /opt/kube/images/${dir}/grafana_${grafanaVer}.tar\"
@@ -267,7 +268,7 @@ case "$1" in
     ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/prometheus_${prometheusVer}.tar"
     ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/alertmanager_${promAlertmanagerVer}.tar"
     ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/node-exporter_${promNodeExporterVer}.tar"
-    ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/busybox_${busyboxVer}.tar"
+    ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/busybox_${busyboxLatestVer}.tar"
     ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/configmap-reload_${configmapReloadVer}.tar"
     ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/pstauffer_curl_${pcurlVer}.tar"
     ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/grafana_${grafanaVer}.tar"
@@ -284,7 +285,7 @@ case "$1" in
     echo -e "                         prometheus:${prometheusVer}"
     echo -e "                         alertmanager:${promAlertmanagerVer}"
     echo -e "                         node-exporter:${promNodeExporterVer}"
-    echo -e "                         busybox:${busyboxVer}"
+    echo -e "                         busybox:${busyboxLatestVer}"
     echo -e "                         pstauffer/curl:${pcurlVer}"
     echo -e "                         configmap-reload:${configmapReloadVer}"
     echo -e "                         grafana:${grafanaVer}"
