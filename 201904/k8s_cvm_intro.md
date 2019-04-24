@@ -1,4 +1,4 @@
-### <center>腾讯云 CVM CentOS 系统 kebernetes 集群部署</center>
+### <center>腾讯云 CVM CentOS 系统 kubernetes 集群部署</center>
 
 文档中脚本默认均以 `root` 用户执行
 
