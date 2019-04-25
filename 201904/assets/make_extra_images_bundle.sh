@@ -117,7 +117,7 @@ case "$1" in
     fi
 
     echo -e "Extracting images '$srcFile' to /etc/ansible/down/ ..."
-    tar -xvf "$srcFile" -C /etc/ansible/down/
+    tar -xvf "$srcFile" --strip-components 1 -C /etc/ansible/down/
     ;;
 
   install)
