@@ -243,8 +243,7 @@ case "$1" in
     tar -xvf "$srcFile" --strip-components 1 -C /etc/ansible/down/
     ;;
 
-
-  install)
+  push)
     if [ $2 ];then
       srcFile="$2"
     elif [ -f $bundle ];then
@@ -254,8 +253,11 @@ case "$1" in
       exit 1
     fi
 
-    echo -e "Pushing images to all k8s master/node nodes, it will take a long time...\n"
+    echo -e "Pushing images to k8s nodes, it will take a long time...\n"
     ansible kube-master,kube-node -m unarchive -a "src=${srcFile} dest=/opt/kube/images/"
+    ;;
+
+  install)
     echo -e "Loading images at k8s nodes..."
     ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/alpine_${alpineVer}.tar"
     ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/busybox_${busyboxVer}.tar"
@@ -276,7 +278,7 @@ case "$1" in
     ;;
 
   *)
-    echo -e "Usage: [dump|extract|install|cli]\n"
+    echo -e "Usage: [dump|extract|push|install|cli]\n"
     echo -e "dump                   Save istio images and pack to file '/tmp/${bundle}'"
     echo -e "                         alpine:${alpineVer}"
     echo -e "                         busybox:${busyboxVer}"
@@ -294,11 +296,11 @@ case "$1" in
     echo -e "                         zipkin:${zipkinVer}"
     echo -e "                         istio:${istioVer} of istio/app, kubectl, citadel, galley, mixer, mixer_codegen, node-agent-k8s, pilot,"
     echo -e "                           proxyv2, proxy_debug, proxy_init, proxytproxy, servicegraph, sidecar_injector, test_policybackend \n"
-    echo -e "cli                    Generate cli string of install for executing step by step manually"
     echo -e "extract <bundleFile>   Extract images to the path '/etc/ansible/down/'. Using the file under current folder if <bundleFile> not specified. "
+    echo -e "push <bundleFile>      Push images in the file '${bundle}' to nodes of kube-master and kube-node via ansible."
     echo -e "                       Using the file under current folder if <bundleFile> not specified."
-    echo -e "install <bundleFile>   Push images in the file '${bundle}' to nodes of kube-master and kube-node via ansible, and docker load them."
-    echo -e "                       Using the file under current folder if <bundleFile> not specified. \n"
+    echo -e "install <bundleFile>   execute \"docker load -f <isio images>\" on nodes of kube-node."
+    echo -e "cli                    Generate cli string of install for executing step by step manually."
     exit 0
   ;;
 esac
