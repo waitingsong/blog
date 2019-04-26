@@ -48,6 +48,9 @@ nfsClientRep=jmgao1983/nfs-client-provisioner:$nfsClientVer
 nginxVer=latest
 nginxRep=nginx:$nginxVer
 
+tillerVer=v2.12.3
+tillerRep=jmgao1983/tiller:$tillerVer
+
 
 case "$1" in
   dump)
@@ -70,6 +73,9 @@ case "$1" in
 
     docker pull $nfsClientRep
     docker pull $nginxRep
+
+    docker pull $tillerRep
+    docker pull $zipkinRep
 
 
     echo -e '\n--------------------------------------------------'
@@ -98,6 +104,9 @@ case "$1" in
 
     echo -e nginx
     docker save -o /tmp/${dir}/nginx_${nginxVer}.tar $nginxRep
+
+    echo -e tiller
+    docker save -o /tmp/${dir}/tiller_${tillerVer}.tar $tillerRep
 
     echo -e '\n--------------------------------------------------'
     echo -e "Packing images to /tmp/${bundle}, it will take a long time...\n"
@@ -145,6 +154,7 @@ case "$1" in
     ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/heapster_${heapsterVer}.tar"
     ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/nfs-client-provisioner_${nfsClientVer}.tar"
     ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/nginx_${nginxVer}.tar"
+    ansible kube-master,kube-node -a "docker load -i /opt/kube/images/${dir}/tiller_${tillerVer}.tar"
     ;;
 
   *)
@@ -158,6 +168,7 @@ case "$1" in
     echo -e "                         heapster:${heapsterVer}"
     echo -e "                         nfs-client-provisioner:${nfsClientVer}"
     echo -e "                         nginx:${latest}"
+    echo -e "                         tiller:${tillerVer}"
     echo -e "extract <bundleFile>   Extract images to the path '/etc/ansible/down/'. Using the file under current folder if <bundleFile> not specified. "
     echo -e "push <bundleFile>      Push images in the file '${bundle}' to nodes of kube-master and kube-node via ansible."
     echo -e "                       Using the file under current folder if <bundleFile> not specified."
