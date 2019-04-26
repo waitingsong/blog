@@ -6,7 +6,7 @@
 - **以 `root` 用户登录系统执行以下所有操作**
 - 以 `ssh` 客户端连接服务器进行操作， 比如 `xshell`, `putty`
 - `k8s` 集群已经创建，所有节点已启动 `docker` 服务
-- `Node` 节点内存不能低于 4G，否则相关容器可能启动失败  
+- 至少一个 `node` 节点内存不低于 8G，否则相关容器可能启动失败  
 
 
 #### 资源准备
@@ -44,6 +44,7 @@
 #### 推送并安装 Istio 相关镜像
 ---- 
 ```bash
+./make_istio_images_bundle.sh push
 ./make_istio_images_bundle.sh install
 ```
 
