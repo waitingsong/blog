@@ -203,6 +203,7 @@ case "$1" in
     echo -e export jaegertracingVer=$jaegertracingVer
     echo -e export kialiVer=$kialiVer
     echo -e export zipkinVer=$zipkinVer
+    echo -e export tillerVer=$tillerVer
     echo -e export dir=$dir
     echo -e export bundle=$bundle
     echo -e ''
