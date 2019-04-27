@@ -255,6 +255,7 @@ case "$1" in
     fi
 
     echo -e "Pushing images to k8s nodes, it will take a long time...\n"
+    ansible kube-master,kube-node -m file -a "path=/opt/kube/images state=directory "
     ansible kube-master,kube-node -m unarchive -a "src=${srcFile} dest=/opt/kube/images/"
     ;;
 
