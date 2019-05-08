@@ -41,7 +41,7 @@ metricsRep=mirrorgooglecontainers/metrics-server-amd64:$metricsVer
 pauseVer=3.1
 pauseRep=mirrorgooglecontainers/pause-amd64:$pauseVer
 
-traefikVer=v1.7.4
+traefikVer=v1.7.11
 traefikRep=traefik:$traefikVer
 
 
