@@ -19,7 +19,7 @@ alpineRep=alpine:$alpineVer
 busyboxVer=1.30.1
 busyboxRep=busybox:$busyboxVer
 
-istioVer=1.1.3
+istioVer=1.1.7
 istioRep=istio/app:$istioVer
 istioKubectlRep=istio/kubectl:$istioVer
 istioCitadelRep=istio/citadel:$istioVer
@@ -39,7 +39,7 @@ istioTestPolicybackendRep=istio/test_policybackend:$istioVer
 jaegertracingVer=1.9
 jaegertracingRep=jaegertracing/all-in-one:$jaegertracingVer
 
-kialiVer=v0.14
+kialiVer=v0.16
 kialiRep=kiali/kiali:$kialiVer
 
 # prometheus
@@ -61,7 +61,7 @@ configmapReloadRep=jimmidyson/configmap-reload:$configmapReloadVer
 pcurlVer=latest
 pcurlRep=pstauffer/curl:$pcurlVer
 
-grafanaVer=5.4.0
+grafanaVer=6.0.2
 grafanaRep=grafana/grafana:$grafanaVer
 
 kubeStateMetricsVer=v1.3.1
@@ -146,7 +146,7 @@ case "$1" in
       $istioProxytproxyRep \
       $istioServicegraphRep \
       $istioSidecarInjectorRep \
-      $istioTestPolicybackendRep 
+      $istioTestPolicybackendRep
 
     echo -e jaegertracing
     docker save -o /tmp/${dir}/jaegertracing_${jaegertracingVer}.tar $jaegertracingRep
