@@ -22,23 +22,23 @@
   ```bash
   cd /tmp 
   ./make_istio_images_bundle.sh dump
-  # Bundle file created as '/tmp/istio_images_bundle_1.1.3.tar.xz'
+  # Bundle file created as '/tmp/istio_images_bundle_1.1.7.tar.xz'
   ```
 
 - 打开 [Istio release](https://github.com/istio/istio/releases) 页面下载最新版安装包并解压到当前目录,
   ```bash
   cd /usr/local/src
-  curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.1.3 sh -
+  curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.1.7 sh -
 
-  ll istio-1.1.3/
+  ll istio-1.1.7/
   total 40
-  drwxr-xr-x  2 root root  4096 Apr 13 06:36 bin
-  drwxr-xr-x  6 root root  4096 Apr 13 06:36 install
-  -rw-r--r--  1 root root   602 Apr 13 06:36 istio.VERSION
-  -rw-r--r--  1 root root 11343 Apr 13 06:36 LICENSE
-  -rw-r--r--  1 root root  5921 Apr 13 06:36 README.md
-  drwxr-xr-x 15 root root  4096 Apr 13 06:36 samples
-  drwxr-xr-x  7 root root  4096 Apr 13 06:36 tools
+  drwxr-xr-x  2 root root  4096 May 15 08:59 bin
+  drwxr-xr-x  6 root root  4096 May 15 08:59 install
+  -rw-r--r--  1 root root   602 May 15 08:59 istio.VERSION
+  -rw-r--r--  1 root root 11343 May 15 08:59 LICENSE
+  -rw-r--r--  1 root root  5921 May 15 08:59 README.md
+  drwxr-xr-x 15 root root  4096 May 15 08:59 samples
+  drwxr-xr-x  7 root root  4096 May 15 08:59 tools
   ```
 
 #### 推送并安装 Istio 相关镜像
@@ -65,7 +65,7 @@ Istio 默认使用‘负载均衡器’服务对象类型。对于裸机安装�
 ##### 方案1：使用 Helm template 进行安装
 
 ```bash
-cd /usr/local/src/istio-1.1.3
+cd /usr/local/src/istio-1.1.7
 
 kubectl create namespace istio-system
 
@@ -98,18 +98,19 @@ helm template install/kubernetes/helm/istio --name istio --namespace istio-syste
 
 ##### 确认安装情况
 ```bash
-# default 配置时
 kubectl get pod -n istio-system
+
+# default 配置时
 NAME                                     READY   STATUS    RESTARTS   AGE
 istio-citadel-899dfb67c-5hlsc             1/1     Running     0          49s
-istio-cleanup-secrets-1.1.3-nkdxt         0/1     Completed   0          50s
+istio-cleanup-secrets-1.1.7-nkdxt         0/1     Completed   0          50s
 istio-galley-555dd7c7d7-rpfln             1/1     Running     0          49s
 istio-ingressgateway-5b547dfb7b-ctm5l     1/1     Running     0          49s
 istio-init-crd-10-l9xcj                   0/1     Completed   0          66s
 istio-init-crd-11-nqvml                   0/1     Completed   0          66s
 istio-pilot-9f5c75ddf-n5s6p               2/2     Running     0          49s
 istio-policy-bd45d757d-6qcdg              2/2     Running     1          49s
-istio-security-post-install-1.1.3-nbwwv   0/1     Completed   0          50s
+istio-security-post-install-1.1.7-nbwwv   0/1     Completed   0          50s
 istio-sidecar-injector-998dd6cbb-n2hdm    1/1     Running     0          49s
 istio-telemetry-656df5b64-k8vkf           2/2     Running     1          49s
 prometheus-7f87866f5f-t97wc               1/1     Running     0          49s
@@ -117,16 +118,16 @@ prometheus-7f87866f5f-t97wc               1/1     Running     0          49s
 # demo 配置时
 grafana-749c78bcc5-fbzmn                  1/1     Running     0          101s
 istio-citadel-899dfb67c-8shx2             1/1     Running     0          100s
-istio-cleanup-secrets-1.1.3-jbhsl         0/1     Completed   0          102s
+istio-cleanup-secrets-1.1.7-jbhsl         0/1     Completed   0          102s
 istio-egressgateway-748d5fd794-x5bjt      1/1     Running     0          101s
 istio-galley-555dd7c7d7-86r2b             1/1     Running     0          101s
-istio-grafana-post-install-1.1.3-kq7b4    0/1     Completed   0          103s
+istio-grafana-post-install-1.1.7-kq7b4    0/1     Completed   0          103s
 istio-ingressgateway-55dd86767f-jd9m4     1/1     Running     0          101s
 istio-init-crd-10-l9xcj                   0/1     Completed   0          16m
 istio-init-crd-11-nqvml                   0/1     Completed   0          16m
 istio-pilot-6964dd4957-7bzdq              2/2     Running     0          101s
 istio-policy-689687bd77-ncw2n             2/2     Running     1          101s
-istio-security-post-install-1.1.3-t2kwh   0/1     Completed   0          102s
+istio-security-post-install-1.1.7-t2kwh   0/1     Completed   0          102s
 istio-sidecar-injector-998dd6cbb-7mwkh    1/1     Running     0          100s
 istio-telemetry-8564679887-59c8z          2/2     Running     1          101s
 istio-tracing-595796cf54-jn49s            1/1     Running     0          100s
@@ -174,10 +175,10 @@ zipkin                   ClusterIP   10.68.96.189    <none>        9411/TCP     
 
 istio 的samples目录中有很多示例。我们现在使用samples/sleep/sleep.yaml 来验证刚刚开启的Sidecar自动注入功能。
 
-进入目录 istio-1.1.3/ 部署一个新的应用
+进入目录 istio-1.1.7/ 部署一个新的应用
 
 ```bash
-cd istio-1.1.3/
+cd istio-1.1.7/
 kubectl apply -f samples/sleep/sleep.yaml
 
 kubectl get pod 
@@ -215,12 +216,14 @@ sleep-7549f66447-x4td6          2/2     Running   0          37s
 
   Containers:
    sleep:
-   
-     .... 
+    Container ID:   docker://
+    Image:         pstauffer/curl
+    .... 
    
    istio-proxy:
- 
-     ....
+    Container ID:   docker://
+    Image:         docker.io/istio/proxyv2:1.1.7
+    ....
     
 ```
 多出了一个 `istio-proxy` 容器及其对应的存储卷
