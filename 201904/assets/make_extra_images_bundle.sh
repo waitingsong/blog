@@ -14,7 +14,7 @@
 BASH
 #--------------------------------------------------
 
-basicVer=1.0
+basicVer=1.1
 dir=extra_images_kubeasz_${basicVer}
 bundle=${dir}.tar.xz
 
@@ -28,10 +28,10 @@ elasticsearchRep=mirrorgooglecontainers/elasticsearch:$elasticsearchVer
 alpineVer=3.6
 alpineRep=alpine:$alpineVer
 
-fluentdElasticsearchVer=v2.0.2
+fluentdElasticsearchVer=v2.4.0
 fluentdElasticsearchRep=mirrorgooglecontainers/fluentd-elasticsearch:$fluentdElasticsearchVer
 
-kibanaVer=5.6.4
+kibanaVer=6.6.1
 kibanaRep=jmgao1983/kibana:$kibanaVer
 # efk END
 

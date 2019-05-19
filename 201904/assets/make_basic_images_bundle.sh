@@ -14,7 +14,7 @@
 BASH
 #--------------------------------------------------
 
-basicVer=1.0
+basicVer=1.1
 dir=basic_images_kubeasz_${basicVer}
 bundle=${dir}.tar.xz
 
@@ -98,7 +98,7 @@ case "$1" in
 
     echo -e '\n--------------------------------------------------'
     echo -e "Packing images to /tmp/${bundle}, it will take a long time...\n"
-    cd /tmp/${dir} 
+    cd /tmp/${dir}
     tar -cJvf /tmp/${bundle} *
     echo -e ''
     echo -e "Bundle file created as '/tmp/${bundle}'\n"
