@@ -45,7 +45,7 @@ heapsterGrafanaRep=mirrorgooglecontainers/heapster-grafana-amd64:$heapsterGrafan
 nfsClientVer=latest
 nfsClientRep=jmgao1983/nfs-client-provisioner:$nfsClientVer
 
-nginxVer=latest
+nginxVer=alpine
 nginxRep=nginx:$nginxVer
 
 tillerVer=v2.12.3
