@@ -374,6 +374,28 @@ reboot
 #### 升级内核到 v5
 见文档 [升级 kernel](./CentOS7-update-kernel.md)
 
+#### 开启 TCP BBR 算法
+执行
+```sh
+cd /usr/local/src
+wget https://github.com/teddysun/across/raw/master/bbr.sh 
+sh bbr.sh
+```
+
+检查
+```sh
+sysctl net.ipv4.tcp_available_congestion_control
+# 返回值应为：
+net.ipv4.tcp_available_congestion_control = cubic reno bbr 
+
+sysctl net.core.default_qdisc
+# 返回值应为：
+net.core.default_qdisc = fq
+
+lsmod | grep bbr
+# 返回值有 tcp_bbr 模块即说明bbr已启动
+```
+
 #### 完成设置后重启系统
 ```bash
 reboot
