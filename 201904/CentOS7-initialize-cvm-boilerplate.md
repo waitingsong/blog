@@ -138,7 +138,7 @@ yum install -y bash-completion bind-utils \
   dstat \
   expect finger gd git gpm \
   htop iotop iptstate iptraf-ng iperf \
-  jwhois \
+  jq jwhois \
   libuv lsof lynx \
   mtr net-tools nfs-utils nmap \
   p7zip \
@@ -360,9 +360,9 @@ echo 'deploy节点公钥文件内容' >> /home/admin/.ssh/authorized_keys
 
 设置服务器**仅**接受ssh公钥登录（禁止通过口令登录系统）
 ```bash
+cp /etc/ssh/sshd_config /etc/ssh/ori_sshd_config
 sed -i "s/^\s*\(PasswordAuthentication.*\)/# \1/" /etc/ssh/sshd_config
-echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config
-echo '' >> /etc/ssh/sshd_config
+#echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config
 ```
 
 重启服务器
