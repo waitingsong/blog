@@ -13,12 +13,12 @@
 #### 配置界面语言
 
 查看配置信息，执行命令
-```bash
+```sh
 locale
 ```
 
 执行 
-```bash
+```sh
 echo '
 LANG="en_US.UTF-8"
 LC_TIME="en_US.UTF-8"
@@ -30,23 +30,23 @@ SYSFONT="latarcyrheb-sun16"
 
 #### 设置时区
 
-```bash
+```sh
 cp /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
 ```
 
 #### 删除防火墙及 ntp
-```bash
+```sh
 yum remove -y firewalld python-firewall firewalld-filesystem ntp
 ```
 
 #### 升级系统
-```bash
+```sh
 yum update -y
 reboot
 ```
 
 #### 安装 `yum` 加速及核心包
-```bash
+```sh
 yum install -y deltarpm wget curl yum-priorities yum-axelget \
   yum-utils device-mapper-persistent-data lvm2 \
   tzdata python \
@@ -61,23 +61,23 @@ yum install -y deltarpm wget curl yum-priorities yum-axelget \
 
 
 #### 设置 `rc.local` 自动执行
- ```bash
+ ```sh
  chmod +x /etc/rc.d/rc.local
  ```
 
 #### 新增系统默认用户
 
 新增常用用户、新建目录
-```bash
+```sh
 useradd -u2000 admin
 ```
 
 设置 admin 用户口令 
-```bash
+```sh
 passwd admin
 ```
 
-```bash
+```sh
 useradd -u2001 -M -s /bin/false www
 useradd -u2002 -G www -M -s /bin/false nginx
 useradd -u2003 git
@@ -90,7 +90,7 @@ usermod -aG docker admin
 ```
 
 生成 `root` 和 `admin` 账号的 ssh 密钥对
-```bash
+```sh
 ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519
 sudo -u admin sh -c "ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519"
 ```
@@ -105,7 +105,7 @@ admin  ALL=(ALL)       ALL
 ```
 
 修改 ssh 登录设置
-```bash
+```sh
 sed -i "s/^\s*\(AllowUsers.*\)/# \1/" /etc/ssh/sshd_config
 sed -i "s/^\s*\(PubkeyAuthentication .*\)/# \1/" /etc/ssh/sshd_config
 echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
@@ -114,7 +114,7 @@ echo '' >> /etc/ssh/sshd_config
 ```
 
 设置仅允许 Ed25519 算法证书
-```bash
+```sh
 sed -i "s/\(^\s*HostKey.\+ssh_host_rsa_key\)/# \1/" /etc/ssh/sshd_config
 sed -i "s/\(^\s*HostKey.\+ssh_host_dsa_key\)/# \1/" /etc/ssh/sshd_config
 sed -i "s/\(^\s*HostKey.\+ssh_host_ecdsa_key\)/# \1/" /etc/ssh/sshd_config
@@ -123,7 +123,7 @@ sed -i "s/^#\s*\(HostKey.\+ssh_host_ed25519_key\)/\1/" /etc/ssh/sshd_config
 
 #### 更新系统 CA 证书集
 
-```bash
+```sh
 #cp /tmp/ca-ec.crt /etc/pki/ca-trust/source/anchors/
 wget -O /etc/pki/ca-trust/source/anchors/ca-bundle.pem https://curl.haxx.se/ca/cacert.pem
 update-ca-trust
@@ -132,7 +132,7 @@ update-ca-trust
 
 #### 安装常用工具
 
-```bash
+```sh
 yum install -y bash-completion bind-utils \
   curl chrony \
   dstat \
@@ -149,7 +149,7 @@ yum install -y bash-completion bind-utils \
 
 
 #### 安装编译环境
-```bash
+```sh
 yum install -y make \
   autoconf automake \
   cmake \
@@ -163,7 +163,7 @@ yum install -y make \
 
 
 #### 安装集群相关软件
-```bash
+```sh
 yum install -y conntrack-tools \
   ipset ipvsadm \
   keepalived jq \
@@ -171,14 +171,14 @@ yum install -y conntrack-tools \
 ```
 
 安装 jid 
-```bash
+```sh
 cd /tmp
 wget https://github.com/simeji/jid/releases/download/v0.7.6/jid_linux_amd64.zip
 unzip jid_linux_amd64.zip -d /usr/local/bin/
 ```
 
 命令缩写
-```bash
+```sh
 cat>>/usr/local/bin/kubectl-ls<<EOF
 #!/bin/bash
 
@@ -197,7 +197,7 @@ k ls deploy
 ```
 
 显示 CRD 扩展信息
-```bash
+```sh
 mkdir -p ~/.kube/columns
 cat>>~/.kube/columns/prometheus<<EOF
 NAME          REPLICAS      VERSION      CPU                         MEMORY                         ALERTMANAGER
@@ -214,7 +214,7 @@ k ls prometheus k8s
 Centos7 自带版本为 1.0.2，更新为最新版
 
 下载源代码编辑安装
-```bash
+```sh
 cd /usr/local/src
 git clone -b master --depth=1 https://github.com/openssl/openssl
 cd openssl
@@ -230,7 +230,7 @@ make depend && make all && make install
 ```
 
 配置动态链接库路径
-```bash
+```sh
 echo "/usr/local/ssl/lib" >> /etc/ld.so.conf
 ldconfig /usr/local/ssl/lib
 ldd /usr/local/ssl/bin/openssl 
@@ -238,12 +238,12 @@ ldconfig -v
 ```
 
 更新全局搜索路径
-```bash
+```sh
 echo 'PATH=/usr/local/ssl/bin:$PATH' >> /etc/bashrc
 ```
 
 更新配置（或者重新登录用户）
-```bash
+```sh
 . /etc/bashrc
 openssl version
   
@@ -254,7 +254,7 @@ openssl version
 #### 开启相关服务
 
 - 计划任务
-  ```bash
+  ```sh
   systemctl enable crond
   systemctl start crond
   ```
@@ -289,7 +289,7 @@ EOF
 
 - 内存 4GB 及以上的可开启巨页面支持  
   设置 256 实际占用内存为 256*2MB=512MB，随内存增加. 8GB 内存可设定为 512 占用 1GB
-  ```bash
+  ```sh
   touch /etc/sysctl.d/99-sysctl.conf
   echo 'vm.nr_hugepages=256' >> /etc/sysctl.conf
   sysctl -p
@@ -301,7 +301,7 @@ EOF
 
 
 - （可选）16GB 内存以上可把 `/tmp` 挂接到内存中
-  ```bash
+  ```sh
   systemctl enable tmp.mount
   systemctl start tmp.mount
   ```
@@ -310,13 +310,13 @@ EOF
 #### 常用配置设置
 
 VIM 设置 避免vim粘贴时自动格式化缩进，（粘贴开始前后用F9手工切换）执行
-```bash
+```sh
 echo 'set pastetoggle=<F9>' >> /root/.vimrc
 echo 'set pastetoggle=<F9>' >> /home/admin/.vimrc
 ```
 
 增加命令别名
-```bash
+```sh
 cat>>/etc/bashrc<<EOF
 
 alias crontab='crontab -i'
@@ -342,31 +342,31 @@ EOF
 ```
 
 登录显示信息
-```bash
+```sh
 echo 'df -lhT' >> /etc/profile
 ```
 
 
 #### 设置服务器仅接受 ssh 公钥登录
-```bash
+```sh
 reboot
 ```
 
 添加 deploy 节点公钥
-```bash
+```sh
 echo 'deploy节点公钥文件内容' >> /root/.ssh/authorized_keys
 echo 'deploy节点公钥文件内容' >> /home/admin/.ssh/authorized_keys
 ```
 
 设置服务器**仅**接受ssh公钥登录（禁止通过口令登录系统）
-```bash
+```sh
 cp /etc/ssh/sshd_config /etc/ssh/ori_sshd_config
 sed -i "s/^\s*\(PasswordAuthentication.*\)/# \1/" /etc/ssh/sshd_config
 #echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config
 ```
 
 重启服务器
-```bash
+```sh
 reboot
 ```
 
@@ -397,7 +397,7 @@ lsmod | grep bbr
 ```
 
 #### 完成设置后重启系统
-```bash
+```sh
 reboot
 ```
 
