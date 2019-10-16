@@ -86,6 +86,8 @@ groupadd -g26 postgres
 useradd -u26 -g26 postgres
 useradd -u2007 -M -s /bin/false docker
 useradd -u2008 -M -s /bin/false pgbouncer
+useradd -u2009 ci
+usermod -aG docker ci
 usermod -aG docker admin
 ```
 
@@ -93,6 +95,7 @@ usermod -aG docker admin
 ```sh
 ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519
 sudo -u admin sh -c "ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519"
+sudo -u ci sh -c "ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519"
 ```
 
 
@@ -109,7 +112,7 @@ admin  ALL=(ALL)       ALL
 sed -i "s/^\s*\(AllowUsers.*\)/# \1/" /etc/ssh/sshd_config
 sed -i "s/^\s*\(PubkeyAuthentication .*\)/# \1/" /etc/ssh/sshd_config
 echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
-echo 'AllowUsers git admin root' >> /etc/ssh/sshd_config
+echo 'AllowUsers git admin root ci' >> /etc/ssh/sshd_config
 echo '' >> /etc/ssh/sshd_config
 ```
 
