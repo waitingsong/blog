@@ -344,9 +344,14 @@ EOF
 
 ```
 
-登录显示信息
+登录显示信息及配置
 ```sh
-echo 'df -lhT' >> /etc/profile
+cat>>/etc/profile<<EOF
+export XZ_DEFAULTS="-T 0"
+df -lhT
+
+EOF
+
 ```
 
 
