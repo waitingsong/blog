@@ -31,7 +31,7 @@ SYSFONT="latarcyrheb-sun16"
 #### 设置时区
 
 ```sh
-cp /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
+ln -sf /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
 ```
 
 #### 删除防火墙及 ntp
@@ -314,14 +314,26 @@ sysctl -p
 
 VIM 设置 避免vim粘贴时自动格式化缩进，（粘贴开始前后用F9手工切换）执行
 ```sh
-echo 'set pastetoggle=<F9>' >> /root/.vimrc
-echo 'set pastetoggle=<F9>' >> /home/admin/.vimrc
+cat>> /root/.vimrc <<EOF
+set sw=2
+set ts=2
+filetype indent on
+set pastetoggle=<F9>
+EOF
+
+
+cat>> /home/admin/.vimrc <<EOF
+set sw=2
+set ts=2
+filetype indent on
+set pastetoggle=<F9>
+EOF
+
 ```
 
 增加命令别名
 ```sh
-cat>>/etc/bashrc<<EOF
-
+cat>> /etc/bashrc <<EOF
 alias crontab='crontab -i'
 alias dk='docker'
 alias dkps='docker ps --format "table {{.Image}}\t{{.Command}}\t{{.RunningFor}}\t{{.Status}}\t{{.Names}}\t{{.Mounts}}"'
@@ -338,18 +350,15 @@ alias kex='kubectl exec -it'
 alias klo='kubectl logs -f'
 alias kg='kubectl get'
 alias kd='kubectl describe'
-# vim:ts=4:sw=4
-
 EOF
 
 ```
 
 登录显示信息及配置
 ```sh
-cat>>/etc/profile<<EOF
+cat>> /etc/profile <<EOF
 export XZ_DEFAULTS="-T 0"
 df -lhT
-
 EOF
 
 ```

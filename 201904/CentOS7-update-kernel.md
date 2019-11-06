@@ -42,8 +42,9 @@ yum update --exclude=kernel*
 ```
 
 
-#### （可选）清除旧内核文件 保留最近两个
+#### （可选）清除旧内核文件 保留最近一个
 ```sh
 yum install -y yum-utils
-package-cleanup --oldkernels
+package-cleanup --oldkernels --count 1
 ```
+
