@@ -337,6 +337,15 @@ cat>> /etc/bashrc <<EOF
 alias crontab='crontab -i'
 alias dk='docker'
 alias dkps='docker ps --format "table {{.Image}}\t{{.Command}}\t{{.RunningFor}}\t{{.Status}}\t{{.Names}}\t{{.Mounts}}"'
+alias dki='docker image'
+alias dkis='docker inspect'
+alias dkiif='docker image inspect -f "Id:{{.Id}} {{println}}\
+Created: {{.Created}} {{println}}\
+RepoDigests: {{range .RepoDigests}}{{println}}  {{.}}{{end}} {{println}}\
+RepoTags: {{range .RepoTags}}{{println}}  {{.}}{{end}} {{println}}\
+Layers: {{range .RootFS.Layers}}{{println}}  {{.}}{{end}} {{println}}\
+Labels: {{json .Config.Labels}}\
+"'
 alias sudo='sudo '
 alias vi='vim'
 alias rm='rm -i'
