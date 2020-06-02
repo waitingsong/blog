@@ -49,7 +49,7 @@ reboot
 ```sh
 yum install -y deltarpm wget curl yum-priorities yum-axelget \
   yum-utils device-mapper-persistent-data lvm2 \
-  tzdata python \
+  tzdata python zstd \
 ```
 
 
@@ -335,6 +335,9 @@ EOF
 ```sh
 cat>> /etc/bashrc <<EOF
 alias crontab='crontab -i'
+alias ll='ls -l --color=auto'
+alias time='/usr/bin/time '
+alias ztar='tar -I zstdmt'
 alias dk='docker'
 alias dkps='docker ps --format "table {{.Image}}\t{{.Command}}\t{{.RunningFor}}\t{{.Status}}\t{{.Names}}\t{{.Mounts}}"'
 alias dki='docker image'
@@ -366,7 +369,8 @@ EOF
 登录显示信息及配置
 ```sh
 cat>> /etc/profile <<EOF
-export XZ_DEFAULTS="-T 0"
+export XZ_DEFAULTS='-T 0'
+export ZSTD_CLEVEL=9
 df -lhT
 EOF
 
