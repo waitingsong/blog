@@ -1,16 +1,16 @@
-### <center> 腾讯云 CVM CentOS7 自定义镜像初始化配置 </center>
+# <center> 腾讯云 CVM CentOS7 自定义镜像初始化配置 </center>
 
-#### 目的
+## 目的
 基于腾讯云 CVM 基础 CentOS7 64bit 镜像初始化配置制作自定义镜像用于安装 Kerbernetes 集群节点
 
 
-#### 准备
+## 准备
 
 - **以 `root` 用户登录系统执行以下所有操作**
 - 确认可以访问因特网
 
 
-#### 配置界面语言
+## 配置界面语言
 
 查看配置信息，执行命令
 ```sh
@@ -28,24 +28,24 @@ SYSFONT="latarcyrheb-sun16"
 ' > /etc/locale.conf
 ```
 
-#### 设置时区
+## 设置时区
 
 ```sh
 ln -sf /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
 ```
 
-#### 删除防火墙及 ntp
+## 删除防火墙及 ntp
 ```sh
 yum remove -y firewalld python-firewall firewalld-filesystem ntp
 ```
 
-#### 升级系统
+## 升级系统
 ```sh
 yum update -y
 reboot
 ```
 
-#### 安装 `yum` 加速及核心包
+## 安装 `yum` 加速及核心包
 ```sh
 yum install -y deltarpm wget curl yum-priorities yum-axelget \
   yum-utils device-mapper-persistent-data lvm2 \
@@ -53,19 +53,19 @@ yum install -y deltarpm wget curl yum-priorities yum-axelget \
 ```
 
 
-#### 确认关闭 SELinux
+## 确认关闭 SELinux
 - 检测selinux状态，执行 `getenforce`，应该显示 `>> disabled` 否则执行以下操作
 - 执行 `vi /etc/selinux/config`
 - 设置 `SELINUX=disabled`
 - 重启系统
 
 
-#### 设置 `rc.local` 自动执行
+## 设置 `rc.local` 自动执行
  ```sh
  chmod +x /etc/rc.d/rc.local
  ```
 
-#### 新增系统默认用户
+## 新增系统默认用户
 
 新增常用用户、新建目录
 ```sh
@@ -99,7 +99,7 @@ sudo -u ci sh -c "ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519"
 ```
 
 
-#### 增强系统安全
+## 增强系统安全
 
 授权用户 `admin` 用于sudo执行权限 执行 `visudo` 末尾添加以下内容
 ```
@@ -124,7 +124,7 @@ sed -i "s/\(^\s*HostKey.\+ssh_host_ecdsa_key\)/# \1/" /etc/ssh/sshd_config
 sed -i "s/^#\s*\(HostKey.\+ssh_host_ed25519_key\)/\1/" /etc/ssh/sshd_config
 ```
 
-#### 更新系统 CA 证书集
+## 更新系统 CA 证书集
 
 ```sh
 #cp /tmp/ca-ec.crt /etc/pki/ca-trust/source/anchors/
@@ -133,7 +133,7 @@ update-ca-trust
 ```
 
 
-#### 安装常用工具
+## 安装常用工具
 
 ```sh
 yum install -y bash-completion bind-utils \
@@ -151,7 +151,7 @@ yum install -y bash-completion bind-utils \
 ```
 
 
-#### 安装编译环境
+## 安装编译环境
 ```sh
 yum install -y make \
   autoconf automake \
@@ -165,7 +165,7 @@ yum install -y make \
 ```
 
 
-#### 安装集群相关软件
+## 安装集群相关软件
 ```sh
 yum install -y conntrack-tools \
   ipset ipvsadm \
@@ -212,7 +212,7 @@ k ls prometheus k8s
 ```
 
 
-#### 编译安装 `opessl` 版本
+## 编译安装 `opessl` 版本
 
 Centos7 自带版本为 1.0.2，更新为最新版
 
@@ -254,7 +254,7 @@ openssl version
 ```
 
 
-#### 开启相关服务
+## 开启相关服务
 
 - 计划任务
   ```sh
@@ -263,7 +263,7 @@ openssl version
   ```
 
 
-#### 系统性能调整
+## 系统性能调整
 
 - 内核 TCP/IP、Socket参数调优
 
@@ -310,7 +310,7 @@ sysctl -p
   ```
 
 
-#### 常用配置设置
+## 常用配置设置
 
 VIM 设置 避免vim粘贴时自动格式化缩进，（粘贴开始前后用F9手工切换）执行
 ```sh
@@ -377,7 +377,7 @@ EOF
 ```
 
 
-#### 设置服务器仅接受 ssh 公钥登录
+## 设置服务器仅接受 ssh 公钥登录
 ```sh
 reboot
 ```
@@ -401,10 +401,10 @@ reboot
 ```
 
 
-#### 升级内核到 v5
+## 升级内核到 v5
 见文档 [升级 kernel](./CentOS7-update-kernel.md)
 
-#### 开启 TCP BBR 算法
+## 开启 TCP BBR 算法
 执行
 ```sh
 cd /usr/local/src
@@ -431,9 +431,9 @@ lsmod | grep bbr
 reboot
 ```
 
-#### 以此系统制作 k8s-node 镜像，用于自定义镜像安装以后的 k8s 节点
+## 以此系统制作 k8s-node 镜像，用于自定义镜像安装以后的 k8s 节点
 
 
-#### 资源
+## 资源
 - [Mozilla CA证书](https://curl.haxx.se/docs/caextract.html) 
 - [Kubectl 效率提升指北](https://www.kubernetes.org.cn/5269.html)
