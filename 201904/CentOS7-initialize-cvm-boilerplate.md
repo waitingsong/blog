@@ -186,11 +186,11 @@ cat>>/usr/local/bin/kubectl-ls<<EOF
 #!/bin/bash
 
 # see if we have custom-columns-file defined
-if [ ! -z "$1" ] && [ -f $HOME/.kube/columns/$1 ];
+if [ ! -z "\$1" ] && [ -f \$HOME/.kube/columns/\$1 ];
 then
-  kubectl get -o=custom-columns-file=$HOME/.kube/columns/$1 $@
+  kubectl get -o=custom-columns-file=\$HOME/.kube/columns/\$1 \$@
 else
-  kubectl get $@
+  kubectl get \$@
 fi
 EOF
 
