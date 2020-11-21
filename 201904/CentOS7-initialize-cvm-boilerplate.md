@@ -8,7 +8,7 @@
 
 - **以 `root` 用户登录系统执行以下所有操作**
 - 确认可以访问因特网
-
+- 建议以 `ssh` 客户端连接服务器进行操作， 比如 `xshell`, `putty`
 
 ## 配置界面语言
 
@@ -39,31 +39,35 @@ ln -sf /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
 yum remove -y firewalld python-firewall firewalld-filesystem ntp
 ```
 
-## 升级系统
-```sh
-yum update -y
-reboot
-```
-
 ## 安装 `yum` 加速及核心包
-```sh
-yum install -y deltarpm wget curl yum-priorities yum-axelget \
-  yum-utils device-mapper-persistent-data lvm2 \
-  tzdata python zstd \
-```
 
+```sh
+yum install -y curl deltarpm 
+  device-mapper-persistent-data
+  lvm2 python wget tzdata \
+  yum-axelget yum-priorities yum-utils 
+  zstd \
+```
 
 ## 确认关闭 SELinux
 - 检测selinux状态，执行 `getenforce`，应该显示 `>> disabled` 否则执行以下操作
 - 执行 `vi /etc/selinux/config`
 - 设置 `SELINUX=disabled`
-- 重启系统
+
 
 
 ## 设置 `rc.local` 自动执行
- ```sh
- chmod +x /etc/rc.d/rc.local
- ```
+
+```sh
+chmod +x /etc/rc.d/rc.local
+```
+
+## 升级系统
+
+```sh
+yum update -y
+```
+
 
 ## 新增系统默认用户
 
@@ -77,6 +81,7 @@ useradd -u2000 admin
 passwd admin
 ```
 
+新增其它用户
 ```sh
 useradd -u2001 -M -s /bin/false www
 useradd -u2002 -G www -M -s /bin/false nginx
@@ -126,6 +131,7 @@ sed -i "s/^#\s*\(HostKey.\+ssh_host_ed25519_key\)/\1/" /etc/ssh/sshd_config
 
 ## 更新系统 CA 证书集
 
+执行
 ```sh
 #cp /tmp/ca-ec.crt /etc/pki/ca-trust/source/anchors/
 wget -O /etc/pki/ca-trust/source/anchors/ca-bundle.pem https://curl.haxx.se/ca/cacert.pem
@@ -152,6 +158,7 @@ yum install -y bash-completion bind-utils \
 
 
 ## 安装编译环境
+
 ```sh
 yum install -y make \
   autoconf automake \
@@ -256,17 +263,16 @@ openssl version
 
 ## 开启相关服务
 
-- 计划任务
-  ```sh
-  systemctl enable crond
-  systemctl start crond
-  ```
+计划任务
+```sh
+systemctl enable crond
+systemctl start crond
+```
 
 
 ## 系统性能调整
 
-- 内核 TCP/IP、Socket参数调优
-
+### 内核 TCP/IP、Socket参数调优
 ```sh
 cat>>/etc/sysctl.conf<<EOF
 net.core.rmem_max = 838860
@@ -290,24 +296,23 @@ EOF
 sysctl -p
 ```
 
-- 内存 4GB 及以上的可开启巨页面支持  
-  设置 256 实际占用内存为 256*2MB=512MB，随内存增加. 8GB 内存可设定为 512 占用 1GB
-  ```sh
-  touch /etc/sysctl.d/99-sysctl.conf
-  echo 'vm.nr_hugepages=256' >> /etc/sysctl.conf
-  sysctl -p
-  ```
+### 内存 4GB 及以上的可开启巨页面支持  
+设置 256 实际占用内存为 256*2MB=512MB，随内存增加. 8GB 内存可设定为 512 占用 1GB
+```sh
+touch /etc/sysctl.d/99-sysctl.conf
+echo 'vm.nr_hugepages=256' >> /etc/sysctl.conf
+sysctl -p
+```
 
-- 查看巨页面设置 `cat /proc/meminfo | grep Huge`
-  **注意** `Oracle 11g` 默认启用的AMM功能不支持巨页面, 但ASMM支持  
-  临时更改大页面值可使用命令 `sysctl vm.nr_hugepages=512`
+查看巨页面设置 `cat /proc/meminfo | grep Huge`
+**注意** `Oracle 11g` 默认启用的AMM功能不支持巨页面, 但ASMM支持  
+临时更改大页面值可使用命令 `sysctl vm.nr_hugepages=512`
 
-
-- （可选）16GB 内存以上可把 `/tmp` 挂接到内存中
-  ```sh
-  systemctl enable tmp.mount
-  systemctl start tmp.mount
-  ```
+（可选）16GB 内存以上可把 `/tmp` 挂接到内存中
+```sh
+systemctl enable tmp.mount
+systemctl start tmp.mount
+```
 
 
 ## 常用配置设置
@@ -378,6 +383,8 @@ EOF
 
 
 ## 设置服务器仅接受 ssh 公钥登录
+
+先重启服务器
 ```sh
 reboot
 ```
@@ -404,7 +411,9 @@ reboot
 ## 升级内核到 v5
 见文档 [升级 kernel](./CentOS7-update-kernel.md)
 
+
 ## 开启 TCP BBR 算法
+
 执行
 ```sh
 cd /usr/local/src
@@ -437,3 +446,4 @@ reboot
 ## 资源
 - [Mozilla CA证书](https://curl.haxx.se/docs/caextract.html) 
 - [Kubectl 效率提升指北](https://www.kubernetes.org.cn/5269.html)
+
