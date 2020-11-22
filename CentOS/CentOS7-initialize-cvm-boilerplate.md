@@ -106,7 +106,7 @@ sudo -u ci sh -c "ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519"
 
 ## 增强系统安全
 
-授权用户 `admin` 用于sudo执行权限 执行 `visudo` 末尾添加以下内容
+授权用户 `sudo` 执行权限 执行 `visudo` 末尾添加以下内容
 ```
 Defaults: admin        timestamp_timeout=15
 admin  ALL=(ALL)       ALL
@@ -185,6 +185,7 @@ yum install -y conntrack-tools \
 cd /tmp
 wget https://github.com/simeji/jid/releases/download/v0.7.6/jid_linux_amd64.zip
 unzip jid_linux_amd64.zip -d /usr/local/bin/
+rm jid_linux_amd64.zip -f
 ```
 
 命令缩写
@@ -265,14 +266,13 @@ openssl version
 
 计划任务
 ```sh
-systemctl enable crond
-systemctl start crond
+systemctl enable --now crond
 ```
 
 
 ## 系统性能调整
 
-### 内核 TCP/IP、Socket参数调优
+内核 TCP/IP、Socket参数调优
 ```sh
 cat>>/etc/sysctl.conf<<EOF
 net.core.rmem_max = 838860
@@ -296,17 +296,13 @@ EOF
 sysctl -p
 ```
 
-### 内存 4GB 及以上的可开启巨页面支持  
-设置 256 实际占用内存为 256*2MB=512MB，随内存增加. 8GB 内存可设定为 512 占用 1GB
+对于大内存服务器可以编辑以下文件设置小交换频率，
 ```sh
+cat /proc/sys/vm/swappiness
 touch /etc/sysctl.d/99-sysctl.conf
-echo 'vm.nr_hugepages=256' >> /etc/sysctl.conf
+echo vm.swappiness=10 >> /etc/sysctl.d/99-sysctl.conf
 sysctl -p
 ```
-
-查看巨页面设置 `cat /proc/meminfo | grep Huge`
-**注意** `Oracle 11g` 默认启用的AMM功能不支持巨页面, 但ASMM支持  
-临时更改大页面值可使用命令 `sysctl vm.nr_hugepages=512`
 
 （可选）16GB 内存以上可把 `/tmp` 挂接到内存中
 ```sh
@@ -340,13 +336,14 @@ EOF
 ```sh
 cat>> /etc/bashrc <<EOF
 alias crontab='crontab -i'
-alias ll='ls -l --color=auto'
-alias time='/usr/bin/time '
-alias ztar='tar -I zstdmt'
+alias tarz='tar -I zstdmt'
 alias dk='docker'
-alias dkps='docker ps --format "table {{.Image}}\t{{.Command}}\t{{.RunningFor}}\t{{.Status}}\t{{.Names}}\t{{.Mounts}}"'
+alias dkc='docker container'
 alias dki='docker image'
 alias dkis='docker inspect'
+alias dkps='docker ps --format "table {{.Image}}\t{{.Command}}\t{{.RunningFor}}\t{{.Status}}\t{{.Names}}\t{{.Mounts}}"'
+alias dkst='docker stats'
+
 alias dkiif='docker image inspect -f "Id:{{.Id}} {{println}}\
 Created: {{.Created}} {{println}}\
 RepoDigests: {{range .RepoDigests}}{{println}}  {{.}}{{end}} {{println}}\
@@ -354,6 +351,7 @@ RepoTags: {{range .RepoTags}}{{println}}  {{.}}{{end}} {{println}}\
 Layers: {{range .RootFS.Layers}}{{println}}  {{.}}{{end}} {{println}}\
 Labels: {{json .Config.Labels}}\
 "'
+
 alias sudo='sudo '
 alias vi='vim'
 alias rm='rm -i'
@@ -381,6 +379,10 @@ EOF
 
 ```
 
+增加最大打开文件句柄数量
+```sh
+echo 'ulimit -SHn 65535' >> /etc/rc.local
+```
 
 ## 设置服务器仅接受 ssh 公钥登录
 
@@ -393,16 +395,20 @@ reboot
 ```sh
 echo 'deploy节点公钥文件内容' >> /root/.ssh/authorized_keys
 echo 'deploy节点公钥文件内容' >> /home/admin/.ssh/authorized_keys
+
+# eg.
+echo 'ssh-ed25519 AAAAC...GMq ed25519 256-111017' >> /root/.ssh/authorized_keys
 ```
 
-设置服务器**仅**接受ssh公钥登录（禁止通过口令登录系统）
+设置服务器**仅**接受 ssh 公钥登录（禁止通过口令登录系统）
 ```sh
 cp /etc/ssh/sshd_config /etc/ssh/ori_sshd_config
 sed -i "s/^\s*\(PasswordAuthentication.*\)/# \1/" /etc/ssh/sshd_config
-#echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config
+echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config
 ```
 
-重启服务器
+
+## 完成设置后重启系统
 ```sh
 reboot
 ```
