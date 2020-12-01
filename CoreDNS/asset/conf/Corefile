@@ -1,0 +1,38 @@
+
+.:53 {
+  cancel
+  chaos 
+  hosts {
+    fallthrough
+  }
+  cache 120
+  bufsize 1232
+  #forward . 61.139.2.69 218.6.200.139 9.9.9.9
+  forward . /etc/resolv.conf
+  log
+  errors
+  # invalid when docker
+  #reload 10s
+}
+
+whoami {
+  cancel 
+  whoami
+  # metrics, health, ready 不要绑定相同端口! 
+  # curl -si 127.0.0.1:10053/ready
+  ready :10053
+  # curl -si 127.0.0.1:10054/health
+  health :10053
+}
+
+# https://coredns.io/plugins/etcd/
+svc.local 10.0.0.0/24 {
+  etcd {
+    path /coredns
+    #endpoint http://localhost:2379 http://opther:2379
+    endpoint http://localhost:2379
+  }
+  cache 5
+  loadbalance
+}
+

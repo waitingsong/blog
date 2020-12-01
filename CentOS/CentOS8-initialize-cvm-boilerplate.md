@@ -384,6 +384,7 @@ alias sudo='sudo '
 alias vi='vim'
 alias rm='rm -i'
 alias dstat='dstat -cdlmnpsy'
+alias ntt='netstat -tunpl'
 alias allnst="netstat -n |awk '/^tcp/ {++S[\$NF]} END {for(a in S) print a, S[a]}'"
 alias usenst="netstat -an | grep 80 | awk '{print \$6}' | sort | uniq -c | sort -rn"
 alias webnst="netstat -nat|grep ":80"|awk '{print \$5}' |awk -F: '{print \$1}' | sort| uniq -c|sort -rn|head -n 10"

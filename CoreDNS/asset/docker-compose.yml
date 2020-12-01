@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  coredns:
+    image: coredns/coredns
+    container_name: coredns
+    restart: always
+    # for dig whoami
+    network_mode: host
+    command: -conf /etc/Corefile
+    expose:
+      - 53
+      - 53/udp
+      - 10053/tcp
+      - 10054/tcp
+    ports:
+      - 53:53
+      - 53:53/udp
+      # curl -si 127.0.0.1:10053/ready
+      - 10053:10053
+      # curl -si 127.0.0.1:10053/health
+      - 10054:10054
+    volumes:
+      - ./conf/Corefile:/etc/Corefile:rw
+      - /etc/resolv-coredns.conf:/etc/resolv.conf:ro
+      - /etc/hosts:/etc/hosts:ro
+      - /var/log/nginx:/var/log/nginx:rw
+
+
