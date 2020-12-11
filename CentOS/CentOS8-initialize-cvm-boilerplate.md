@@ -76,6 +76,7 @@ wget -O /etc/yum.repos.d/CentOS-ali.repo https://mirrors.aliyun.com/repo/Centos-
 sed -i -e '/mirrors.cloud.aliyuncs.com/d' -e '/mirrors.aliyuncs.com/d' /etc/yum.repos.d/CentOS-ali.repo
 
 cd /etc/yum.repos.d
+rm -f CentOS-Linux-*
 mv -f CentOS-Base.repo{,.bak}
 mv -f CentOS-AppStream.repo{,.bak}
 mv -f CentOS-Extras.repo{,.bak}
@@ -102,6 +103,7 @@ dnf install -y curl wget yum-utils
 dnf update -y
 # update 之后需要重新执行
 cd /etc/yum.repos.d
+rm -f CentOS-Linux-*
 mv -f CentOS-Base.repo{,.bak}
 mv -f CentOS-AppStream.repo{,.bak}
 mv -f CentOS-Extras.repo{,.bak}
