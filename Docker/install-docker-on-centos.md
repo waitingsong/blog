@@ -8,8 +8,17 @@ dnf install -y device-mapper-persistent-data lvm2
 #dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 dnf config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 
-#dnf install https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.13-3.2.el7.x86_64.rpm
-dnf install https://mirrors.aliyun.com/docker-ce/linux/centos/7/x86_64/edge/Packages/containerd.io-1.3.7-3.1.el7.x86_64.rpm
+# docker
+dnf install https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm   
+dnf install https://download.docker.com/linux/centos/8/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el8.x86_64.rpm   
+
+# aliyun
+dnf install https://mirrors.aliyun.com/docker-ce/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm   
+dnf install https://mirrors.aliyun.com/docker-ce/linux/centos/8/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el8.x86_64.rpm   
+
+dnf install https://mirrors.aliyun.com/docker-ce/linux/centos/7/x86_64/stable/Packages/containerd.io-1.3.7-3.1.el7.x86_64.rpm
+dnf install https://mirrors.aliyun.com/docker-ce/linux/centos/8/x86_64/stable/Packages/containerd.io-1.3.7-3.1.el8.x86_64.rpm
+
 
 mkdir -p /data/.docker /data/docker /etc/docker
 chown root:root /data/.docker
@@ -42,6 +51,36 @@ chmod 775 /data/docker
   ```
   输出
   ```
+  Client: Docker Engine - Community
+  Version:           20.10.0
+  API version:       1.41
+  Go version:        go1.13.15
+  Git commit:        7287ab3
+  Built:             Tue Dec  8 18:57:35 2020
+  OS/Arch:           linux/amd64
+  Context:           default
+  Experimental:      true
+
+  Server: Docker Engine - Community
+  Engine:
+    Version:          20.10.0
+    API version:      1.41 (minimum version 1.12)
+    Go version:       go1.13.15
+    Git commit:       eeddea2
+    Built:            Tue Dec  8 18:56:55 2020
+    OS/Arch:          linux/amd64
+    Experimental:     false
+  containerd:
+    Version:          1.4.3
+    GitCommit:        269548fa27e0089a8b8278fc4fc781d7f65a939b
+  runc:
+    Version:          1.0.0-rc92
+    GitCommit:        ff819c7e9184c13b7c2607fe6c30ae19403a7aff
+  docker-init:
+    Version:          0.19.0
+    GitCommit:        de40ad0
+
+
   Client: Docker Engine - Community
    Version:           19.03.13
    API version:       1.40
