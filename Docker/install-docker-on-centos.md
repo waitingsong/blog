@@ -128,6 +128,7 @@ cat>> /etc/docker/daemon.json <<EOF
 EOF
 
 cat /etc/docker/daemon.json
+systemctl restart docker
 ```
 
 设置网络
