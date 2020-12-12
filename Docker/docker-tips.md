@@ -9,18 +9,13 @@
 
 保存正在运行的容器为镜像： `docker commit <CONTAIN-ID> <IMAGE-NAME>`
 
-```bash
-export XZ_DEFAULTS="-T 0 -4"
-export ZSTD_CLEVEL=10
-
+```sh
 docker save hello-world > /tmp/hello.tar
+docker save hello -o /tmp/hello.tar
 docker load -i /tmp/hello.tar
 docker load < /tmp/hello.tar
-
-docker save centos -o /tmp/hello.tar
-time sh -c 'docker save centos | xz > /tmp/centos.xz'
-time sh -c 'docker save centos | zstdmt > /tmp/centos.zst'
 ```
+
 
 获得容器 id
 ```sh
@@ -31,4 +26,28 @@ docker container ls
 ```sh
 docker inspect --format '{{json .State.Health}}' 4955 | jq
 ```
+
+
+压缩解压缩性能测试
+```sh
+export XZ_DEFAULTS="-T 0 -2"
+export ZSTD_CLEVEL=10
+
+img=gitlab/gitlab-ce:13.6.2-ce.0
+name=gitlab
+time sh -c "docker save $img | xz > /tmp/$name.xz"
+time sh -c "docker save $img | zstdmt > /tmp/$name-$ZSTD_CLEVEL.zst"
+```
+
+| type    | size (MB) | compress user time | decompress real time |
+| ------- | --------- | ------------------ | -------------------- |
+| xz -2   | 737       | 5m59.103s          | 0m26.274s            |
+| xz -4   | 703       | 10m44.822s         | 0m25.609s            |
+| xz -9   | 606       | 12m1.011s          | 0m22.428s            |
+| zst -5  | 792       | 0m20.174s          | 0m2.224s             |
+| zst -9  | 765       | 0m52.672s          | 0m2.050s             |
+| zst -10 | 752       | 1m21.433s          | 0m1.988s             |
+| zst -15 | 744       | 3m54.210s          | 0m2.006s             |
+|         |           |                    |                      |
+
 
