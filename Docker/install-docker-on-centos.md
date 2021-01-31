@@ -121,7 +121,6 @@ cat>> /etc/docker/daemon.json <<EOF
   "exec-opts": ["native.cgroupdriver=systemd"],
   "registry-mirrors": [
     "https://hub-mirror.c.163.com", 
-    "https://docker.mirrors.ustc.edu.cn",
     "https://mirror.baidubce.com"
   ]
 }
