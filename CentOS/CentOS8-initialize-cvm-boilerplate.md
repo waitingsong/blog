@@ -367,6 +367,7 @@ EOF
 cat>> /etc/bashrc <<EOF
 alias crontab='crontab -i'
 alias tarz='tar -I zstdmt'
+alias dc='docker-compose'
 alias dk='docker'
 alias dkc='docker container'
 alias dki='docker image'
