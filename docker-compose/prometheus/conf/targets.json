@@ -1,0 +1,12 @@
+[
+  {
+    "targets": [ 
+      "ip:port" 
+    ],
+    "labels": {
+      "env": "prod",
+      "job": "api"
+    }
+  }
+]
+

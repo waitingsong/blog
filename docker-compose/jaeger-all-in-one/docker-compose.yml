@@ -1,0 +1,20 @@
+version: '3.8'
+
+# docker run -p 6831:6831/udp -p 6832:6832/udp -p 16686:16686 jaegertracing/all-in-one --log-level=debug
+
+services:
+  jaeger:
+    image: jaegertracing/all-in-one
+    container_name: jaeger-all-in-one
+    restart: always
+    environment:
+      TZ: 'Asia/Chongqing'
+    ports:
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 16686:16686/udp
+    tmpfs:
+      - /tmp
+    shm_size: 2G
+
+

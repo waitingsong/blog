@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13.2-alpine
+    container_name: pg-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+    expose:
+      - 6432
+    ports:
+      - 6432:5432
+    volumes:
+      - data:/var/lib/postgresql/data
+      - log:/var/log/postgresql
+    tmpfs:
+      - /tmp
+    shm_size: 4G
+
+volumes:
+  data:
+  log:
+
+

@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  plantuml:
+    image: plantuml/plantuml-server
+    container_name: plantuml
+    restart: unless-stopped
+    ports:
+      - 8085:8080
+    tmpfs:
+      - /tmp
+    shm_size: 256M
+
+

@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  flutter:
+    image: cirrusci/flutter:latest
+    container_name: flutter
+    restart: always
+    volumes:
+      - /tmp/flutter_demo:/app
+    tmpfs:
+      - /tmp
+    shm_size: 4G
+
+volumes:
+

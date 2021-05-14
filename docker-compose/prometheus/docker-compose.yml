@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  svc:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - data:/data
+      - ./conf:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus_data'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+    tmpfs:
+      - /tmp
+    shm_size: 2G
+
+
+volumes:
+  data:
+
+
+# docker run --rm -u root -v prometheus_data:/data --entrypoint /bin/sh prom/prometheus -c "chown -R 65534:65534 /data"
+
