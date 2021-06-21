@@ -220,6 +220,7 @@ dnf install -y bash-completion \
 dnf install -y bind-utils \
   dnsmasq \
   dstat \
+  lm_sensors \
   mlocate \
   nfs-utils nmap \
   p7zip \
@@ -546,6 +547,10 @@ k ls prometheus k8s
 reboot
 ```
 
+查看系统温度
+```sh
+sensors
+```
 
 ## 以此系统制作 k8s-node 镜像，用于自定义镜像安装以后的 k8s 节点
 

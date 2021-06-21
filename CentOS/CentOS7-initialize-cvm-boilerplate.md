@@ -149,6 +149,7 @@ yum install -y bash-completion bind-utils \
   htop iotop iptstate iptraf-ng iperf \
   jq jwhois \
   libuv lsof lynx \
+  lm_sensors \
   mtr net-tools nfs-utils nmap \
   p7zip \
   rsync \
@@ -446,6 +447,11 @@ lsmod | grep bbr
 #### 完成设置后重启系统
 ```sh
 reboot
+```
+
+查看系统温度
+```sh
+sensors
 ```
 
 ## 以此系统制作 k8s-node 镜像，用于自定义镜像安装以后的 k8s 节点
