@@ -494,6 +494,16 @@ echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config
 ```
 
 
+## 安装 kubectl
+
+```sh
+curl -LO https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl
+curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+echo "$(<kubectl.sha256) kubectl" | sha256sum --check
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+```
+
+
 ## 安装 k8s 集群相关软件
 ```sh
 yum install -y conntrack-tools \
@@ -541,7 +551,6 @@ EOF
 k ls prometheus k8s
 ```
 
-
 ## 完成设置后重启系统
 ```sh
 reboot
@@ -573,4 +582,5 @@ sensors
 ## 资源
 - [Mozilla CA证书](https://curl.haxx.se/docs/caextract.html) 
 - [Kubectl 效率提升指北](https://www.kubernetes.org.cn/5269.html)
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 
