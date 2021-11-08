@@ -94,6 +94,7 @@ useradd -u2008 -M -s /bin/false pgbouncer
 useradd -u2009 ci
 usermod -aG docker ci
 usermod -aG docker admin
+useradd -u2100 -M -s /bin/false node
 ```
 
 生成 `root` 和 `admin` 账号的 ssh 密钥对

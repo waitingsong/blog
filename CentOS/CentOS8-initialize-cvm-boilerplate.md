@@ -141,6 +141,7 @@ useradd -u2008 -M -s /bin/false pgbouncer
 useradd -u2009 ci
 usermod -aG docker ci
 usermod -aG docker admin
+useradd -u2100 -M -s /bin/false node
 ```
 
 生成账号 ssh 密钥对
