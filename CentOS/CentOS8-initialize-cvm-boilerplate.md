@@ -221,6 +221,7 @@ dnf install -y bash-completion \
 dnf install -y bind-utils \
   dnsmasq \
   dstat \
+  elfutils-libelf-devel \
   lm_sensors \
   mlocate \
   nfs-utils nmap \
@@ -231,6 +232,7 @@ dnf install -y bind-utils \
   rsync \
   sysstat \
   telnet \
+  usbutils \
   vim \
   vsftpd \
 ```

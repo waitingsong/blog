@@ -146,6 +146,7 @@ update-ca-trust
 yum install -y bash-completion bind-utils \
   curl chrony \
   dstat \
+  elfutils-libelf-devel \
   expect finger gd git gpm \
   htop iotop iptstate iptraf-ng iperf \
   jq jwhois \
@@ -155,6 +156,7 @@ yum install -y bash-completion bind-utils \
   p7zip \
   rsync \
   sysstat screen telnet traceroute \
+  usbutils \
   uuid unzip vim \
 ```
 
