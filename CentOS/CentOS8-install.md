@@ -68,10 +68,10 @@
 
   - 若此磁盘已有分区则首先删除所有分区
     ```sh
-    parted -s /dev/nvme0n1 rm 0 rm 1 rm2 ...
+    parted -s /dev/nvme0n1 rm 0 rm 1 rm 2
     ```
 
-### 4. 创建 `ESP`, `boot` 核心启动分区
+### 3. 创建 `ESP`, `boot` 核心启动分区
 
 **注意： `nvme0n1` 名称为上方系统盘安装盘的设备名称，切勿弄错**
 1. 创建 GPT 分区
@@ -79,7 +79,7 @@
    parted /dev/nvme0n1 -s mklabel gpt 
    ```
 2. 创建 `biosboot` 引导分区（可选）  
-   若系统磁盘采用 `MBR` 分区表，系统引导为 `BIOS` 而非最新的 `UEFI`，或者在 VMWARE 虚拟机中安装系统，则需要额外的引导分区  
+   若系统磁盘采用 `GPT` 分区表，系统引导为 `BIOS` 而非最新的 `UEFI`，或者在 VMWARE 虚拟机中安装系统，则需要额外的引导分区  
    **如果划分了此分区，则后续操作分区序号都需要+1**
    ```sh
    parted /dev/nvme0n1 -s mkpart Grub 1M 10M 
@@ -91,24 +91,27 @@
    mkfs.fat -F 32 /dev/nvme0n1p1
    ```
    ![](image/i-13.png)  
+3. 创建 `boot` 启动分区
 
+   **注意： `sda` 名称为上方系统盘安装盘的设备名称，切勿弄错**
+   ```sh
+
+   parted /dev/nvme0n1 -s mkpart boot xfs 200M 700M
+   mkfs.xfs /dev/nvme0n1p2
+   ```
 
 ### 系统盘剩余空间由 `LVM` 管理
 
 - 划分系统盘剩余空间分区
   ```sh
-  parted /dev/nvme0n1 -s mkpart boot xfs 200M 700M
-  mkfs.xfs /dev/nvme0n1p2
   parted /dev/nvme0n1 -s mkpart LVM 700M 90%
   ```
 
 - 查看系统盘分区情况
   ```sh
-  parted /dev/sda p
+  parted /dev/nvme0n1 p
   ```
-  结果应该如下  
-
-  ![](image/i-14.png)  
+  ![](image/i-14-8.png)  
 
 
 ### 创建 `LVM` 物理卷、卷组
