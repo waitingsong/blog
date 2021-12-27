@@ -21,7 +21,6 @@
 ```sh
 lsblk
 parted -l
-fdisk -l 
 ```
 
 ## 磁盘操作
