@@ -136,6 +136,8 @@ useradd -u2003 git
 usermod -aG www admin
 groupadd -g26 postgres
 useradd -u26 -g26 postgres
+useradd -u2005 -M -s /bin/false smbuser
+useradd -u2006 -M -s /bin/false smbadmin
 useradd -u2007 -M -s /bin/false docker
 useradd -u2008 -M -s /bin/false pgbouncer
 useradd -u2009 ci
@@ -235,6 +237,7 @@ dnf install -y bind-utils \
   usbutils \
   vim \
   vsftpd \
+  whois \
 ```
 
 
@@ -334,7 +337,7 @@ sysctl -p
 ```sh
 cat /proc/sys/vm/swappiness
 touch /etc/sysctl.d/99-sysctl.conf
-echo vm.swappiness=10 >> /etc/sysctl.d/99-sysctl.conf
+echo vm.swappiness=5 >> /etc/sysctl.d/99-sysctl.conf
 sysctl -p
 ```
 
@@ -488,6 +491,10 @@ echo 'ssh-ed25519 AAAAC...GMq ed25519 256-111017' >> /root/.ssh/authorized_keys
 - 绑定公钥到登录用户
   ```sh
   ssh-copy-id -i ~/.ssh/id_ed25519.pub  root@<ip|服务器名|域名>
+  ```
+- 若服务器 `ssh` 非标准端口 （假定 1022 端口）
+  ```sh
+  ssh-copy-id -i ~/.ssh/id_rsa.pub "-p 1022 root@<ip|服务器名|域名>" 
   ```
 
 设置服务器**仅**接受ssh公钥登录（可选）  
