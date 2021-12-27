@@ -34,8 +34,14 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 reboot
 ```
 
-#### 注意事项
-执行 `yum update` 可能将更新到官方新的低版本内核，此后需要手工重新指定启动内核。
+#### 升级排除内核
+执行 `yum update` 将更新到官方新的低版本内核，需要设置过滤
+
+编辑 `/etc/yum.repos.d/CentOS-Base.repo` 文件在 `[base]` 小结内添加
+```
+exclude=kernel*
+```
+
 或者升级排除内核
 ```sh
 yum update --exclude=kernel*
