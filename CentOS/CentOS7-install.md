@@ -74,14 +74,15 @@
     
 ### 3. 创建 `ESP`, `boot` 核心启动分区
 
-1. 创建 GPT 分区
+1. 设置 GPT 引导格式
    ```sh
    parted -s /dev/sda mklabel gpt
    parted /dev/sda p
    ```
    ![](image/i-12.png)  
 2. 创建 `biosboot` 引导分区（可选）
-   若系统磁盘采用 `GPT` 分区表，系统引导为 `BIOS` 而非最新的 `UEFI`，则需要此引导分区
+   若系统磁盘采用 `GPT` 分区表，系统引导为 `BIOS` 而非最新的 `UEFI`，或者在 VMWARE 虚拟机中安装系统，则需要此引导分区  
+  
    **注意： `sda` 名称为上方系统盘安装盘的设备名称，切勿弄错**
    ```sh
    parted -s /dev/sda mkpart Grub fat32 1M 10M

@@ -74,18 +74,20 @@
 ### 3. 创建 `ESP`, `boot` 核心启动分区
 
 **注意： `nvme0n1` 名称为上方系统盘安装盘的设备名称，切勿弄错**
-1. 创建 GPT 分区
+
+1. 设置 GPT 引导格式
    ```sh
    parted /dev/nvme0n1 -s mklabel gpt 
    ```
 2. 创建 `biosboot` 引导分区（可选）  
    若系统磁盘采用 `GPT` 分区表，系统引导为 `BIOS` 而非最新的 `UEFI`，或者在 VMWARE 虚拟机中安装系统，则需要额外的引导分区  
+
    **如果划分了此分区，则后续操作分区序号都需要+1**
    ```sh
    parted /dev/nvme0n1 -s mkpart Grub 1M 10M 
    parted /dev/nvme0n1 -s set 1 bios_grub on
    ```
-3. 创建 UEFI 启动分区
+3. 创建 UEFI 引导分区
    ```sh
    parted /dev/nvme0n1 -s mkpart EFI fat32 1M 200M set 1 boot on
    mkfs.fat -F 32 /dev/nvme0n1p1
