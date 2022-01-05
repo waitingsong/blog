@@ -89,7 +89,7 @@
    ```
 3. 创建 UEFI 引导分区
    ```sh
-   parted /dev/nvme0n1 -s mkpart EFI fat32 1M 200M set 1 boot on
+   parted /dev/nvme0n1 -s mkpart EFI fat32 1M 300M set 1 boot on
    mkfs.fat -F 32 /dev/nvme0n1p1
    ```
    ![](image/i-13.png)  
@@ -98,7 +98,7 @@
    **注意： `sda` 名称为上方系统盘安装盘的设备名称，切勿弄错**
    ```sh
 
-   parted /dev/nvme0n1 -s mkpart boot xfs 200M 700M
+   parted /dev/nvme0n1 -s mkpart boot xfs 300M 1000M
    mkfs.xfs /dev/nvme0n1p2
    ```
 
@@ -106,7 +106,7 @@
 
 - 划分系统盘剩余空间分区
   ```sh
-  parted /dev/nvme0n1 -s mkpart LVM 700M 90%
+  parted /dev/nvme0n1 -s mkpart LVM 1000M 90%
   ```
 
 - 查看系统盘分区情况
@@ -207,17 +207,6 @@
 
 - 键盘快捷 `Ctrl-Alt-F6` 组合键返回图形界面
 - 点击 `完成` 按钮进入手动分区界面然后点击刷新按钮 更新扫描磁盘分区
-
-  ![](image/i-40.png)  
-  ![](image/i-41.png)  
-  ![](image/i-42.png)  
-
-- 退回到安装目标位置界面后重新点击 `完成` 按钮重新进入
-
-  ![](image/i-43.png)  
-  ![](image/i-44.png)  
-  若创建了 biosboot 分区则  
-  ![](image/i-44a.png)  
 
 
 - 挂载启动分区 `/boot`
