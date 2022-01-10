@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+port=7890
+export https_proxy=http://127.0.0.1:$port http_proxy=http://127.0.0.1:$port all_proxy=socks5://127.0.0.1:$port
