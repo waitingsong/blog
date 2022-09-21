@@ -22,3 +22,17 @@ echo ". /usr/local/bin/z-1.9/z.sh"  >> ~/.profile
 . /usr/local/bin/z-1.9/z.sh
 ```
 
+
+## fd
+
+类似于系统自带的 `find` 命令，使用起来更简单，查找速度更快，并且具有良好的默认设置
+
+[https://github.com/sharkdp/fd](https://github.com/sharkdp/fd)
+
+
+## ripgrep
+
+`grep` 命令的替代，执行速度更快，而且具有健全的默认配置以及丰富的彩色输出
+
+[https://github.com/BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep#installation)
+

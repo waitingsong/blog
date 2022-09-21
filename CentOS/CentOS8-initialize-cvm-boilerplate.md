@@ -238,6 +238,9 @@ dnf install -y bind-utils \
   vim \
   vsftpd \
   whois \
+
+yum-config-manager --add-repo=https://copr.fedorainfracloud.org/coprs/carlwgeorge/ripgrep/repo/epel-7/carlwgeorge-ripgrep-epel-7.repo
+dnf install -y ripgrep
 ```
 
 
@@ -350,81 +353,13 @@ systemctl start tmp.mount
 
 ## 常用配置设置
 
-VIM 设置 避免vim粘贴时自动格式化缩进，（粘贴开始前后用F9手工切换）执行
 ```sh
-cat>> /root/.vimrc <<EOF
-set sw=2
-set ts=2
-filetype indent on
-set pastetoggle=<F9>
-EOF
-
-
-cat>> /home/admin/.vimrc <<EOF
-set sw=2
-set ts=2
-filetype indent on
-set pastetoggle=<F9>
-EOF
-
+cd Linux/scripts
+./05.set-config.global.sh
+./06.set-config.local.sh
 ```
 
-增加命令别名
-```sh
-cat>> /etc/bashrc <<EOF
-alias crontab='crontab -i'
-alias lla='ls -al --color=auto'
-alias llh='ls -alh --color=auto'
-alias tarz='tar -I zstdmt'
-alias dc='docker-compose'
-alias dk='docker'
-alias dkc='docker container'
-alias dki='docker image'
-alias dkv='docker volume'
-alias dkis='docker inspect'
-alias dkps='docker ps --format "table {{.Image}}\t{{.Command}}\t{{.RunningFor}}\t{{.Status}}\t{{.Names}}\t{{.Mounts}}"'
-alias dkst='docker stats'
 
-alias dkiif='docker image inspect -f "Id:{{.Id}} {{println}}\
-Created: {{.Created}} {{println}}\
-RepoDigests: {{range .RepoDigests}}{{println}}  {{.}}{{end}} {{println}}\
-RepoTags: {{range .RepoTags}}{{println}}  {{.}}{{end}} {{println}}\
-Layers: {{range .RootFS.Layers}}{{println}}  {{.}}{{end}} {{println}}\
-Labels: {{json .Config.Labels}}\
-"'
-
-alias sudo='sudo '
-alias vi='vim'
-alias rm='rm -i'
-alias dstat='dstat -cdlmnpsy'
-alias ntt='netstat -tunpl'
-alias allnst="netstat -n |awk '/^tcp/ {++S[\$NF]} END {for(a in S) print a, S[a]}'"
-alias usenst="netstat -an | grep 80 | awk '{print \$6}' | sort | uniq -c | sort -rn"
-alias webnst="netstat -nat|grep ":80"|awk '{print \$5}' |awk -F: '{print \$1}' | sort| uniq -c|sort -rn|head -n 10"
-alias k='kubectl'
-alias ka='kubectl apply --recursive -f'
-alias kex='kubectl exec -it'
-alias klo='kubectl logs -f'
-alias kg='kubectl get'
-alias kd='kubectl describe'
-EOF
-
-```
-
-登录显示信息及配置
-```sh
-cat>> /etc/profile <<EOF
-export XZ_DEFAULTS='-T 0'
-export ZSTD_CLEVEL=9
-df -lhT
-EOF
-
-```
-
-增加最大打开文件句柄数量
-```sh
-echo 'ulimit -SHn 65535' >> /etc/rc.local
-```
 
 定时任务
 - 执行

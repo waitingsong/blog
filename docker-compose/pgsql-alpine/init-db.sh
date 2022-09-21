@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 # 初始化 pg 集群
 # 将会自动执行 entrypoint-initdb.d/ 目录下文件
 # 数据库服务成功启动之后使用 ctrl-c 退出
@@ -16,17 +16,16 @@ container_name=pg-init
 SVC="db"
 
 
-#docker-compose down -v
+# docker-compose down -v
 
-if [[ ! -z ${PASSWD} ]]; then
-
-  docker-compose run \
-    --name $container_name \
-    -v $cwd/entrypoint-initdb.d/:/docker-entrypoint-initdb.d \
-    -e POSTGRES_PASSWORD="$PASSWD" \
-    $SVC
-
-else
+if [[ -z ${PASSWD} ]]; then
   echo '[ERR] password not passed. Please input password for db user postgres. Remember the password!'
+  exit 1
 fi
+
+docker-compose run \
+  --name $container_name \
+  -v $cwd/entrypoint-initdb.d/:/docker-entrypoint-initdb.d \
+  -e POSTGRES_PASSWORD="$PASSWD" \
+  $SVC
 

@@ -9,9 +9,15 @@ services:
     restart: always
     environment:
       TZ: 'Asia/Chongqing'
+      COLLECTOR_OTLP_ENABLED: 'true'
     ports:
       - 6831:6831/udp
       - 6832:6832/udp
+      - 4317:4317
+      - 4318:4318
+      - 14268:14268
+      - 14250:14250
+      - 16686:16686
       - 16686:16686/udp
     tmpfs:
       - /tmp

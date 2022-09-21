@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  svc:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - data:/data
+      - ./conf:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/data'
+      - '--storage.tsdb.retention=15d'
+    tmpfs:
+      - /tmp
+    shm_size: 2G
+
+volumes:
+  data:
+
