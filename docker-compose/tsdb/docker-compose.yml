@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  tsdb:
+    image: timescale/timescaledb-ha:pg15-ts2.9-latest
+    container_name: tsdb
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+    expose:
+      - 5434
+    ports:
+      - 5434:5432
+    volumes:
+      - ./config.d:/etc/pg/conf.d
+      - backup:/home/postgres/pgdata/backup
+      - data:/home/postgres/pgdata/data
+      - log:/home/postgres/pg_log
+    tmpfs:
+      - /tmp
+    shm_size: 8G
+
+volumes:
+  backup:
+  data:
+  log:
+
+
