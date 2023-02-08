@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15.1
+    container_name: pg15
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    volumes:
+      - ./config.d:/etc/pg/conf.d
+      - data:/var/lib/postgresql/data
+      - log:/var/log/postgresql
+    tmpfs:
+      - /tmp
+    shm_size: 8G
+
+volumes:
+  data:
+  log:
+
