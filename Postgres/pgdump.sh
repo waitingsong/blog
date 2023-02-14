@@ -1,6 +1,4 @@
 #!/bin/bash
-clear
-
 nJobs=8
 
 DB="${1:-}"
@@ -22,15 +20,38 @@ find $DIR -type d -mtime +30 -print0 | xargs -0II rm -rf I ;
 
 mydate=$(date +%Y-%m-%d.%H_%M_%S)
 target="$DB-$mydate"
-echo -e "-----------------------------\n"
-echo -e "Starting Backup PostgreSQL\n"
-echo database: $DB
-echo target: $target
-echo -e "-----------------------------\n"
-#pg_dump -Upostgres $DB | gzip > $DB-$mydate.sql.gz
 mkdir -p "$target"
 chmod 755 "$target"
-time pg_dump -Upostgres -Z7 --clean --if-exists -j${nJobs} -Fd "$DB" -f "$target"
+
+clear
+while true; do
+  echo -n "[Question] "; read -e -p "Backup parallelly ? [y|n] " -i "" yn
+  case ${yn} in
+    [Nn]*)
+      echo -e "-----------------------------\n"
+      echo -e "Starting Backup PostgreSQL\n"
+      echo database: $DB
+      echo target: $target.sql.gz
+      echo -e "-----------------------------\n"
+      time pg_dump -Upostgres --clean --if-exists $DB | gzip > $target.sql.gz
+      break;;
+    [Yy]*)
+      echo -e "-----------------------------\n"
+      echo -e "Starting Backup PostgreSQL\n"
+      echo database: $DB
+      echo target: $target
+      echo jobs: $nJobs
+      echo -e "-----------------------------\n"
+      time pg_dump -Upostgres -Z5 --clean --if-exists -j${nJobs} -Fd "$DB" -f "$target"
+
+      status=$?
+      if [ $status -ne 0 ]; then
+        exit 1;
+      fi
+      break;;
+    *)     echo 'Please answer (y)es or (n)o';;
+  esac;
+done;
 
 echo "Finishd"
 

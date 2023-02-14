@@ -1,5 +1,4 @@
 #!/bin/bash
-clear
 
 nJobs=4
 
@@ -20,24 +19,35 @@ fi
 
 
 while true; do
-  echo -n "[Question] "; read -e -p "Ensure target database exists and clean? [y|n] " -i "" yn
+  echo -n "[Question] "; read -e -p "Whether create target database: \"$DB\" ? [y|n] " -i "" yn
   case ${yn} in
     [Nn]*)
       echo -e "-----------------------------\n"
+      echo -e "ensure database exits\n"
       echo -e "sql creating database:"
       echo -e "createdb -Upostgres -E utf8 --locale=C.UTF-8 newdb "
       echo -e "-----------------------------\n"
-      exit 0
-      ;;
-    [Yy]*) break;;
+      break;;
+    [Yy]*)
+      echo -e "> Creating database: \"$DB\" \n"
+
+      # createdb -Upostgres -E utf8 --locale=en_US.UTF-8 newdb
+      # createdb -Upostgres -E utf8 --locale=zh_CN.UTF-8 newdb
+      createdb -Upostgres -E utf8 --locale=C.UTF-8 $DB
+
+      status=$?
+      if [ $status -ne 0 ]; then
+        exit 1;
+      fi
+      break;;
     *)     echo 'Please answer (y)es or (n)o';;
   esac;
 done;
 
-
+clear
 
 while true; do
-  echo -n "[Question] "; read -e -p "Restore parallel ? [y|n] " -i "" yn
+  echo -n "[Question] "; read -e -p "Restore database parallel ? [y|n] " -i "" yn
   case ${yn} in
     [Nn]*)
       echo -e "-----------------------------\n"
@@ -47,7 +57,12 @@ while true; do
       echo -e "-----------------------------\n"
       time pg_restore -Upostgres --single-transaction --no-data-for-failed-tables -d $DB $DIR
       # time pg_restore -Upostgres --single-transaction --clean --if-exists -d $DB $DIR
-      ;;
+
+      status=$?
+      if [ $status -ne 0 ]; then
+        exit 1;
+      fi
+      break;;
     [Yy]*)
       echo -e "-----------------------------\n"
       echo -e "Starting Restore PostgreSQL\n"
@@ -56,8 +71,14 @@ while true; do
       echo jobs: $nJobs
       echo -e "-----------------------------\n"
       time pg_restore -Upostgres --no-data-for-failed-tables -j${nJobs} -d $DB $DIR
+      # time pg_restore -Upostgres --data-only --no-data-for-failed-tables -j${nJobs} -d $DB $DIR
       # time pg_restore -Upostgres --clean --if-exists -j${nJobs} -d $DB $DIR
-      ;;
+
+      status=$?
+      if [ $status -ne 0 ]; then
+        exit 1;
+      fi
+      break;;
     *)     echo 'Please answer (y)es or (n)o';;
   esac;
 done;
@@ -70,16 +91,23 @@ while true; do
   echo -n "[Question] "; read -e -p "Do you want to analyze database? [y|n] " -i "" yn
   case ${yn} in
     [Nn]*) exit 0;;
-    [Yy]*) break;;
+    [Yy]*)
+      echo -e "-----------------------------\n"
+      echo -e "Analyzing PostgreSQL\n"
+      echo database: $DB
+      echo jobs: $nJobs
+      echo -e "-----------------------------\n"
+      time vacuumdb -Upostgres --analyze-in-stages -j${nJobs} -d $DB
+
+      status=$?
+      if [ $status -ne 0 ]; then
+        exit 1;
+      fi
+      break;;
     *)     echo 'Please answer (y)es or (n)o';;
   esac;
 done;
 
-echo -e "-----------------------------\n"
-echo -e "Analyzing PostgreSQL\n"
-echo database: $DB
-echo -e "-----------------------------\n"
-time vacuumdb -Upostgres --analyze-in-stages -j${nJobs} -d $DB
 
 # 将上述脚本导入一个(新建的)数据库 newdb ：
 # createdb newdb -E utf8 --locale=C.UTF-8  -Upostgres
@@ -88,3 +116,4 @@ time vacuumdb -Upostgres --analyze-in-stages -j${nJobs} -d $DB
 # time vacuumdb -Upostgres -z -P12 -j12 -d userdb0021-3
 
 # http://www.postgres.cn/docs/14/app-pgrestore.html
+
