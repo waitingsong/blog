@@ -18,6 +18,7 @@ cd $DIR
 
 find $DIR -type d -mtime +30 -print0 | xargs -0II rm -rf I ;
 
+TZ=Asia/Chongqing
 mydate=$(date +%Y-%m-%d.%H_%M_%S)
 target="$DB-$mydate"
 mkdir -p "$target"
