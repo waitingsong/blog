@@ -1,5 +1,5 @@
 # /etc/bashrc.custom
-# usage: 
+# usage:
 #   echo "source /etc/bashrc.custom" >> /etc/bashrc
 
 
@@ -28,6 +28,7 @@ alias sudo='sudo '
 alias vi='vim'
 alias rm='rm -i'
 alias dstat='dstat -cdlmnpsy'
+alias diostat='iostat -d -x -m 2 100'
 alias ntt='netstat -tunpl'
 alias allnst="netstat -n |awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'"
 alias usenst="netstat -an | grep 80 | awk '{print $6}' | sort | uniq -c | sort -rn"
