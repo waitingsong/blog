@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   tsdb:
-    image: timescale/timescaledb-ha:pg15-ts2.9.2-latest
+    image: timescale/timescaledb-ha:pg15.2-ts2.9.3-latest
+    image: timescale/timescaledb-ha:pg15.2-ts2.10.0-latest
     container_name: tsdb
     restart: always
     environment:
