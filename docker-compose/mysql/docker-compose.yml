@@ -12,13 +12,15 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - data:/var/lib/mysql/data
+      - config:/etc/mysql
+      - data:/var/lib/mysql
       - log:/var/log/mysql
     tmpfs:
       - /tmp
     shm_size: 2G
 
 volumes:
+  config:
   data:
   log:
 
