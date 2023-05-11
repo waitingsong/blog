@@ -198,3 +198,41 @@ conventional-changelog \
   --release-count 0 \
 
 ```
+
+
+git设置代理
+```sh
+git config --global http.proxy  'socks5://127.0.0.1:7890'
+git config --global https.proxy 'socks5://127.0.0.1:7890'
+```
+
+git显示代理
+```sh
+git config http.proxy
+git config https.proxy
+```
+
+git取消代理
+```sh
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+```
+
+~/.ssh/config
+```
+Host github.com
+  user git
+  identityFile ~/.ssh/id_ed25519
+  # for windows:
+  #proxycommand "/c/Program Files/Git/mingw64/bin/connect.exe" -a none -S 127.0.0.1:7890 %h %p
+
+  # for CentOS
+  #proxycommand connect-proxy -S 127.0.0.1:7890 %h %p
+
+  # for linux
+  #proxycommand nc -X connect -x 127.0.0.1:7890 %h %p
+```
+
+
+OR Enabling SSH connections over HTTPS
+https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port
