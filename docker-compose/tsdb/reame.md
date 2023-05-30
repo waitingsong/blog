@@ -4,7 +4,7 @@
 ## default db
 
 ```sh
-docker exec -it timescaledb psql -U postgres -X
+docker exec -it tsdb psql -U postgres -X
 ```
 
 ```sql
@@ -16,7 +16,7 @@ ALTER EXTENSION timescaledb_toolkit UPDATE;
 ## custom db
 
 ```sh
-docker exec -it timescaledb psql -U postgres -X mydb
+docker exec -it tsdb psql -U postgres -X mydb
 ```
 
 ```sql
