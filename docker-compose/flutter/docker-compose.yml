@@ -11,5 +11,4 @@ services:
       - /tmp
     shm_size: 4G
 
-volumes:
 

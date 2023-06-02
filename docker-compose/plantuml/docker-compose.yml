@@ -1,10 +1,12 @@
-version: '3.8'
 
+version: '3.8'
 services:
   plantuml:
     image: plantuml/plantuml-server
     container_name: plantuml
     restart: unless-stopped
+    environment:
+      TZ: 'Asia/Chongqing'
     ports:
       - 8085:8080
     tmpfs:
