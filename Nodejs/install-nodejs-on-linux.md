@@ -26,3 +26,5 @@
 
 
 https://github.com/nvm-sh/nvm
+
+全系统： [通过包管理器方式安装 Node.js](https://nodejs.org/zh-cn/download/package-manager)
