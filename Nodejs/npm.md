@@ -14,7 +14,6 @@ npm i -g --loglevel=info \
   eslint \
   lerna \
   nx \
-  nyc \
   rollup \
   standard-version \
   typedoc \
