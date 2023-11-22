@@ -1,5 +1,5 @@
 #!/bin/sh
-# copty to path /etc/profile.d/alias.sh
+# copy to path /etc/profile.d/alias.custom.sh
 
 alias time='/usr/bin/time '
 alias sh='/bin/bash'

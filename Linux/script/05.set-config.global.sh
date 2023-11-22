@@ -7,9 +7,7 @@ echo 'ulimit -SHn 65535' >> /etc/rc.local
 
 
 # VIM
-cp ../config/.vimrc /root/
-
-
-cp ../config/bashrc.custom /etc/
-echo "source /etc/bashrc.custom" >> /etc/bashrc
+cp -u ../config/.vimrc /root/
+cp -u ../config/alias.custom.sh /etc/profile.d/
+cp -u ../config/bashrc.custom.sh /etc/profile.d/
 

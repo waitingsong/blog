@@ -1,4 +1,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ***** 执行 :set paste 进入粘贴模式！ ******
+" 执行 :set nopaste 退出粘贴模式
+"
+"
 " by Amix - http://amix.dk/
 "
 " Maintainer: redguardtoo <chb_sh@hotmail.com>, Amir Salihefendic <amix3k at gmail.com>
