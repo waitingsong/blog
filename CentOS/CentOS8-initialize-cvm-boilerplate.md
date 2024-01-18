@@ -206,11 +206,10 @@ update-ca-trust
 ```sh
 dnf install -y bash-completion \
   bzip2 \
-  htop iotop iptraf-ng \
+  iotop iptraf-ng \
   jq \
   libuv lsof \
   mtr net-tools \
-  screen \
   traceroute \
   uuid \
   zstd \
@@ -227,7 +226,6 @@ dnf install -y bind-utils \
   lm_sensors \
   mlocate \
   nfs-utils nmap \
-  p7zip \
   pcp \
   rpcbind \
   readline-devel \

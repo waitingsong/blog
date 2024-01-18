@@ -8,19 +8,14 @@ npm i -g --loglevel=info \
 
 npm i -g --loglevel=info \
   @commitlint/cli \
-  @semantic-release/gitlab \
   c8 \
-  config \
   eslint \
   lerna \
   nx \
   rollup \
-  standard-version \
-  typedoc \
   typescript \
   node-gyp \
   zx \
-  autocannon \
   ts-node \
   tsx \
 
