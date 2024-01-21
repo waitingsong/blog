@@ -6,6 +6,8 @@
 npm i -g --loglevel=info \
   nrm
 
+nrm use taobao
+
 npm i -g --loglevel=info \
   @commitlint/cli \
   c8 \
