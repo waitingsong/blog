@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 # 初始化 pg 集群
 # 将会自动执行 entrypoint-initdb.d/ 目录下文件
 # 数据库服务成功启动之后使用 ctrl-c 退出
@@ -14,6 +14,9 @@ PASSWD="${1:-}"
 container_name=pg-init
 SVC="db"
 
+
+sudo chmod 775 init-cluster.sh
+sudo chmod 775 entrypoint-initdb.d/init-user-db.sh
 
 #docker-compose down -v
 

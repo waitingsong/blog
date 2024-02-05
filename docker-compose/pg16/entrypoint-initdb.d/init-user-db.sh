@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "include_dir = '/etc/pg/conf.d'" >> /var/lib/postgresql/data/postgresql.conf 
+echo "include_dir = '/etc/pg/conf.d'" >> /var/lib/postgresql/data/postgresql.conf
 
 # https://hub.docker.com/_/postgres?tab=description#Initialization%20scripts
 set -e

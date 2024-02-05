@@ -17,6 +17,10 @@ docker pull postgres:16.1
 - [custom.conf] 自定义设置
   - `log_statement = 'mod'` 用于测试，生产环境应修改为需要的级别
 
+## 初始化集群
+```sh
+./init-cluster.sh
+```
 
 ## 测试启动服务
 
@@ -26,7 +30,7 @@ docker-compose up
 
 ## 测试控制台登录
 ```bash
-docker exec -it pg bash
+docker exec -it pg16 bash
 psql -U postgres
 postgres=# \l
 ```
