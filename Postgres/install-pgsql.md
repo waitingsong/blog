@@ -1,6 +1,6 @@
 # <center>PostgreSQL 安装</center>
 
-以 Docker 方式安装 PostgreSQL 13
+以 Docker 方式安装 PostgreSQL 16
 
 以 `root` 用户登录执行以下操作
 
@@ -8,7 +8,7 @@
 
 下载镜像
 ```sh
-docker pull postgres:13.1
+docker pull postgres:16.1
 ```
 
 拷贝目录 [./asset](./asset) 到服务器

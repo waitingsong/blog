@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:15.3
-    container_name: pg15
+    image: postgres:16.1
+    container_name: pg16
     restart: always
     environment:
       POSTGRES_DB: postgres
