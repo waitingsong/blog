@@ -3,7 +3,7 @@
 - 安装nvm 管理器
   ```sh
   cd /usr/local/src/
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
   . ~/.bashrc
   ```
 
@@ -11,11 +11,15 @@
   `nvm ls-remote`
 
 - 安装 node.js LTS 最新版本
-  `nvm install 18.0`
-  `nvm use 18.0`
+  ```sh
+  export NVM_NODEJS_ORG_MIRROR=https://nodejs.org/dist
+  export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/dist/
+  ```
+  `nvm install --lts`
+  `nvm use lts`
 
 - 安装 nrm 仓库管理器
-  `npm -g nrm`
+  `npm i -g nrm`
 
 - （备选）替换npm源为淘宝镜像源:
   `npm config set registry https://registry.npmmirror.com`
