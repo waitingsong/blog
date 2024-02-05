@@ -143,10 +143,12 @@ sysctl -p
 
 ## 安装 Docker-Compose
 ```sh
-curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
-chown root:root ./docker-compose
-chmod 755 ./docker-compose
-./docker-compose version
+curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
+# curl -L "https://github.com/docker/compose/releases/download/2.24.5/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
+
+sudo chown root:root ./docker-compose
+sudo chmod 755 ./docker-compose
+sudo ./docker-compose version
 mv docker-compose /usr/local/bin/docker-compose
 ```
 
