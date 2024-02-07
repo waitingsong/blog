@@ -5,19 +5,9 @@
 ```sh
 dnf install -y device-mapper-persistent-data lvm2
 
-#dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+# dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 dnf config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-
-# docker
-dnf install https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm   
-dnf install https://download.docker.com/linux/centos/8/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el8.x86_64.rpm   
-
-# aliyun
-dnf install https://mirrors.aliyun.com/docker-ce/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm   
-dnf install https://mirrors.aliyun.com/docker-ce/linux/centos/8/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el8.x86_64.rpm   
-
-dnf install https://mirrors.aliyun.com/docker-ce/linux/centos/7/x86_64/stable/Packages/containerd.io-1.3.7-3.1.el7.x86_64.rpm
-dnf install https://mirrors.aliyun.com/docker-ce/linux/centos/8/x86_64/stable/Packages/containerd.io-1.3.7-3.1.el8.x86_64.rpm
+# dnf config-manager --add-repo https://mirrors.cloud.tencent.com/docker-ce/linux/centos/docker-ce.repo
 
 
 mkdir -p /data/.docker /data/docker /etc/docker
@@ -30,7 +20,7 @@ chmod 775 /data/docker
 
 - 最新版
   ```sh
-  dnf install docker-ce docker-ce-cli 
+  dnf install docker-ce docker-ce-cli containerd.io docker-compose-plugin
   ```
 - 定版本
   - Step 1: 查找Docker-CE的版本:
@@ -52,62 +42,33 @@ chmod 775 /data/docker
   输出
   ```
   Client: Docker Engine - Community
-  Version:           20.10.0
-  API version:       1.41
-  Go version:        go1.13.15
-  Git commit:        7287ab3
-  Built:             Tue Dec  8 18:57:35 2020
+  Version:           25.0.3
+  API version:       1.44
+  Go version:        go1.21.6
+  Git commit:        4debf41
+  Built:             Tue Feb  6 21:14:42 2024
   OS/Arch:           linux/amd64
   Context:           default
-  Experimental:      true
 
   Server: Docker Engine - Community
   Engine:
-    Version:          20.10.0
-    API version:      1.41 (minimum version 1.12)
-    Go version:       go1.13.15
-    Git commit:       eeddea2
-    Built:            Tue Dec  8 18:56:55 2020
+    Version:          25.0.3
+    API version:      1.44 (minimum version 1.24)
+    Go version:       go1.21.6
+    Git commit:       f417435
+    Built:            Tue Feb  6 21:13:06 2024
     OS/Arch:          linux/amd64
     Experimental:     false
   containerd:
-    Version:          1.4.3
-    GitCommit:        269548fa27e0089a8b8278fc4fc781d7f65a939b
+    Version:          1.6.28
+    GitCommit:        ae07eda36dd25f8a1b98dfbf587313b99c0190bb
   runc:
-    Version:          1.0.0-rc92
-    GitCommit:        ff819c7e9184c13b7c2607fe6c30ae19403a7aff
+    Version:          1.1.12
+    GitCommit:        v1.1.12-0-g51d5e94
   docker-init:
     Version:          0.19.0
     GitCommit:        de40ad0
 
-
-  Client: Docker Engine - Community
-   Version:           19.03.13
-   API version:       1.40
-   Go version:        go1.13.15
-   Git commit:        4484c46d9d
-   Built:             Wed Sep 16 17:03:45 2020
-   OS/Arch:           linux/amd64
-   Experimental:      false
-
-  Server: Docker Engine - Community
-   Engine:
-    Version:          19.03.13
-    API version:      1.40 (minimum version 1.12)
-    Go version:       go1.13.15
-    Git commit:       4484c46d9d
-    Built:            Wed Sep 16 17:02:21 2020
-    OS/Arch:          linux/amd64
-    Experimental:     false
-   containerd:
-    Version:          1.3.7
-    GitCommit:        8fba4e9a7d01810a393d5d25a3621dc101981175
-   runc:
-    Version:          1.0.0-rc10
-    GitCommit:        dc9208a3303feef5b3839f4323d9beb36df0a9dd
-   docker-init:
-    Version:          0.18.0
-    GitCommit:        fec3683
   ```
 
 
@@ -143,8 +104,8 @@ sysctl -p
 
 ## 安装 Docker-Compose
 ```sh
-curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
-# curl -L "https://github.com/docker/compose/releases/download/2.24.5/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
+# curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
+curl -L "https://github.com/docker/compose/releases/download/2.24.5/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
 
 sudo chown root:root ./docker-compose
 sudo chmod 755 ./docker-compose
@@ -157,7 +118,7 @@ mv docker-compose /usr/local/bin/docker-compose
 ```sh
 docker run --rm hello-world
 docker run --rm alpine uname -a
-docker run --rm centos uname -a
+# docker run --rm centos uname -a
 docker images
 ```
 
