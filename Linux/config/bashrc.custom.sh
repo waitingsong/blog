@@ -1,5 +1,5 @@
 #!/bin/sh
-# copty to path /etc/profile.d/bashrc.custom
+# cp -u bashrc.custom.sh /etc/profile.d/
 
 export REG1='foo'
 

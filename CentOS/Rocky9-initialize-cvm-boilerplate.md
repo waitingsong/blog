@@ -141,6 +141,10 @@ useradd -u2009 ci
 usermod -aG docker ci
 usermod -aG docker admin
 useradd -u2100 -M -s /bin/false node
+
+# useradd -u2010 admin
+# passwd admin
+# usermod -aG admin admins
 ```
 
 生成账号 ssh 密钥对

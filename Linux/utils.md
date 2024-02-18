@@ -14,12 +14,15 @@ z usr bin
 
 安装：
 ```sh
-wget https://github.com/waitingsong/blog/raw/main/Linux/bin/z-1.9.tar.gz
-tar -xf z-1.9.tar.gz
-sudo mv z-1.9 /usr/local/bin/
-echo ". /usr/local/bin/z-1.9/z.sh"  >> ~/.bashrc
-echo ". /usr/local/bin/z-1.9/z.sh"  >> ~/.profile
-. /usr/local/bin/z-1.9/z.sh
+wget https://github.com/waitingsong/blog/raw/main/Linux/bin/z-1.12.zip
+wget https://github.com/rupa/z/archive/refs/tags/v1.12.zip
+tar -xf z-1.12.zip
+sudo mv z-1.12 /usr/local/bin/
+# echo ". /usr/local/bin/z-1.12/z.sh"  >> ~/.bashrc
+# echo ". /usr/local/bin/z-1.12/z.sh"  >> ~/.profile
+# echo ". /usr/local/bin/z-1.12/z.sh"  >> /etc/bashrc
+echo ". /usr/local/bin/z-1.12/z.sh"  >> /etc/profile.d/bashrc.custom.sh
+. /usr/local/bin/z-1.12/z.sh
 ```
 
 
