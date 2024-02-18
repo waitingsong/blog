@@ -25,3 +25,8 @@ volumes:
   log:
 
 
+# docker exec -it mysql bash
+# mysql -u root -p
+# GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'your_password' WITH GRANT OPTION;
+# GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+# FLUSH PRIVILEGES;
