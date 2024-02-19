@@ -8,6 +8,6 @@ echo 'ulimit -SHn 65535' >> /etc/rc.local
 
 # VIM
 cp -u ../config/.vimrc /root/
-cp -u ../config/alias.custom.sh /etc/profile.d/
-cp -u ../config/bashrc.custom.sh /etc/profile.d/
+cp -u ../config/profile.d/alias.custom.sh /etc/profile.d/
+cp -u ../config/profile.d/bashrc.custom.sh /etc/profile.d/
 

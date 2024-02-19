@@ -65,7 +65,7 @@ if [ -x "$(command -v git)" ]; then
   alias gc='git commit -v'
   alias gco='git checkout'
   alias gcob='git checkout -b'
-  alias gsw='git switch'
+  alias gs='git switch'
   alias gcp='git cherry-pick'
   # alias gd='git diff'
   # alias gdc='git diff --cached'
