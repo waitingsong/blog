@@ -1,6 +1,11 @@
 #!/bin/sh
 # cp -u alias.custom.sh /etc/profile.d/
 
+
+#if [ -f /usr/share/bash-completion/bash_completion ]; then
+#  . /usr/share/bash-completion/bash_completion
+#fi
+
 alias time='/usr/bin/time '
 alias sh='/bin/bash'
 
@@ -36,13 +41,14 @@ alias ntt='netstat -tunpl'
 alias allnst="netstat -n |awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'"
 alias usenst="netstat -an | grep 80 | awk '{print $6}' | sort | uniq -c | sort -rn"
 alias webnst="netstat -nat|grep ":80"|awk '{print $5}' |awk -F: '{print $1}' | sort| uniq -c|sort -rn|head -n 10"
+
 alias k='kubectl'
 alias ka='kubectl apply --recursive -f'
 alias kex='kubectl exec -it'
 alias klo='kubectl logs -f'
 alias kg='kubectl get'
 alias kd='kubectl describe'
-
+# complete -o default -F __start_kubectl k
 
 if [ "$(uname -s)" == Darwin ]; then
   alias sed='gsed'
@@ -58,6 +64,7 @@ if [ -x "$(command -v git)" ]; then
   alias gb='git branch'
   alias gc='git commit -v'
   alias gco='git checkout'
+  alias gcob='git checkout -b'
   alias gsw='git switch'
   alias gcp='git cherry-pick'
   # alias gd='git diff'
@@ -66,7 +73,7 @@ if [ -x "$(command -v git)" ]; then
   # alias gf='git fetch'
   # alias gfa='git fetch --all'
   # alias gfo='git fetch origin'
-  # alias gl='git log'
+  alias gl='git log'
   alias glg='git log --graph --oneline --decorate --all'
   alias glgs='git log --show-signature'
   alias glgg='git log --graph --oneline --decorate --all --date=short --pretty=format:"%C(yellow)%h%Creset %Cgreen%ad%Creset %Cblue%an%Creset %Cred%d%Creset %s"'
@@ -78,6 +85,8 @@ if [ -x "$(command -v git)" ]; then
   alias gst='git status'
   alias gmg='git merge'
   alias gmgs='git merge --squash'
+
+  # complete -o default -o nospace -F _git_alias g
 
   # git config --global i18n.commitencoding utf-8
   # git config --global alias.br branch
@@ -91,4 +100,17 @@ if [ -x "$(command -v git)" ]; then
 
 fi
 
-# vim:ts=4:sw=4
+_git_alias() {
+  local cur prev words cword
+  # _init_completion -s || return
+  _get_comp_words_by_ref -n : cur prev words cword
+
+  # 列出所有 Git 别名
+  local aliases
+  aliases=$(git config --get-regexp ^alias\. | sed 's/^alias\.//')
+
+  # 提供补全建议
+  COMPREPLY=($(compgen -W "$aliases" -- "$cur"))
+}
+
+# vim:ts=2:sw=2
