@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5
+    container_name: mysql5
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysqlabc123
+    expose:
+      - 3306
+    ports:
+      - 3306:3306
+    volumes:
+      - config:/etc/mysql
+      - data:/var/lib/mysql
+      - log:/var/log/mysql
+    tmpfs:
+      - /tmp
+    shm_size: 2G
+
+volumes:
+  config:
+  data:
+  log:
+
+
+# docker exec -it mysql5 bash
+# mysql -u root -p
+# GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'your_password' WITH GRANT OPTION;
+# GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+# FLUSH PRIVILEGES;
