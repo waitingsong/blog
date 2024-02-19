@@ -110,7 +110,7 @@ curl -L "https://github.com/docker/compose/releases/download/2.24.5/docker-compo
 sudo chown root:root ./docker-compose
 sudo chmod 755 ./docker-compose
 sudo ./docker-compose version
-mv docker-compose /usr/local/bin/docker-compose
+mv -f docker-compose /usr/local/bin/docker-compose
 ```
 
 
