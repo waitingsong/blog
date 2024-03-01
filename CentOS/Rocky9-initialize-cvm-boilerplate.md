@@ -14,6 +14,8 @@
 ## 确认关闭 SELinux
 
 ```sh
+dnf upgrade --refresh -y
+dnf update -y
 sed -i 's|SELINUX=\w*|SELINUX=disabled|' /etc/selinux/config
 reboot
 # 重启之后执行, 应该显示 Disabled 
@@ -30,48 +32,21 @@ locale
 
 执行 
 ```sh
-dnf install -y wget curl langpacks-zh_CN langpacks-en langpacks-en_GB
-
-echo '
-LANG="en_US.UTF-8"
-LC_TIME="en_US.UTF-8"
-LC_MESSAGES="en_US.UTF-8"
-SUPPORTED="zh_CN.UTF-8:zh_CN.GB18030:zh_CN:zh:en_US.UTF-8:en_US:en"
-SYSFONT="latarcyrheb-sun16"
-' > /etc/locale.conf
+sh ./Linux/script/00.init.sh
+sh ./Linux/script/01.user.sh
 ```
 
-## 设置时区
 
+## 查看当前时区
 ```sh
-timedatectl set-timezone Asia/Chongqing
-# or
-cp /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
-
-# 查看当前时区
 timedatectl
 # 查看可用时区
 timedatectl list-timezones
 ```
 
-## 删除程序
-```sh
-dnf remove -y firewalld python-firewall firewalld-filesystem ntp \
-  selinux-policy \
-  docker \
-  docker-client \
-  docker-client-latest \
-  docker-common \
-  docker-latest \
-  docker-latest-logrotate \
-  docker-logrotate \
-  docker-engine \
-```
-
 
 ## 升级系统
 ```sh
-dnf upgrade --refresh
 # wget -O /etc/yum.repos.d/CentOS-ali.repo https://mirrors.aliyun.com/repo/Centos-8.repo
 # # 非阿里云 ECS 用户执行
 # sed -i -e '/mirrors.cloud.aliyuncs.com/d' -e '/mirrors.aliyuncs.com/d' /etc/yum.repos.d/CentOS-ali.repo
@@ -86,103 +61,27 @@ dnf upgrade --refresh
 ```
 
 
-## 安装 epel 仓库
-```sh
-dnf config-manager --set-enabled crb
-dnf install -y \
-    https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm \
-    https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-9.noarch.rpm
-```
-
-
-```sh
-dnf install -y curl wget yum-utils 
-dnf update -y
-# update 之后需要重新执行
-# cd /etc/yum.repos.d
-# rm -f CentOS-Linux-*
-# mv -f CentOS-Base.repo{,.bak}
-# mv -f CentOS-AppStream.repo{,.bak}
-# mv -f CentOS-Extras.repo{,.bak}
-# mv -f CentOS-PowerTools.repo{,.bak}
-# mv -f CentOS-centosplus.repo{,.bak}
-dnf makecache
-reboot
-```
-
-
-## 设置 `rc.local` 自动执行
-
-```sh
-chmod +x /etc/rc.d/rc.local
-```
-
-## 新增系统默认用户
-
-新增常用用户、新建目录
-```sh
-useradd -u2000 admin
-passwd admin
-```
-
-新增其它用户
-```sh
-useradd -u2001 -M -s /bin/false www
-useradd -u2002 -G www -M -s /bin/false nginx
-useradd -u2003 git
-usermod -aG www admin
-groupadd -g26 postgres
-useradd -u26 -g26 postgres
-useradd -u2005 -M -s /bin/false smbuser
-useradd -u2006 -M -s /bin/false smbadmin
-useradd -u2007 -M -s /bin/false docker
-useradd -u2008 -M -s /bin/false pgbouncer
-useradd -u2009 ci
-usermod -aG docker ci
-usermod -aG docker admin
-useradd -u2100 -M -s /bin/false node
-
-# useradd -u2010 admin
-# passwd admin
-# usermod -aG admin admins
-```
-
-生成账号 ssh 密钥对
-```sh
-ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519
-sudo -u admin sh -c "ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519"
-sudo -u ci sh -c "ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519"
-sudo -u git sh -c "ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519"
-```
-
-
 ## 增强系统安全
 
-授权用户 `sudo` 执行权限 执行 `visudo` 末尾添加以下内容
+授权用户 `sudo visudo` 末尾添加以下内容
 ```
-Defaults: admin        timestamp_timeout=15
+Defaults: ALL timestamp_timeout=15
 admin  ALL=(ALL)       ALL
+admins  ALL=(ALL)       ALL
+admin2 ALL=(root)     NOPASSWD: ALL
 ```
 
 修改 ssh 登录设置
 ```sh
-sed -i "s/^\s*\(AllowUsers.*\)/# \1/" /etc/ssh/sshd_config
-sed -i "s/^\s*\(PubkeyAuthentication .*\)/# \1/" /etc/ssh/sshd_config
-echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
-echo 'AllowUsers git admin root ci' >> /etc/ssh/sshd_config
-echo '' >> /etc/ssh/sshd_config
-```
-
-设置仅允许 Ed25519 算法证书
-```sh
-sed -i "s/\(^\s*HostKey.\+ssh_host_rsa_key\)/# \1/" /etc/ssh/sshd_config
-sed -i "s/\(^\s*HostKey.\+ssh_host_dsa_key\)/# \1/" /etc/ssh/sshd_config
-sed -i "s/\(^\s*HostKey.\+ssh_host_ecdsa_key\)/# \1/" /etc/ssh/sshd_config
-sed -i "s/^#\s*\(HostKey.\+ssh_host_ed25519_key\)/\1/" /etc/ssh/sshd_config
+sh ./Linux/script/02.ssh-config.sh
 ```
 
 
 ## 更新系统 CA 证书集
+
+```sh
+sh ./Linux/script/03.update-crt-ios.sh
+```
 
 准备自签发CA证书
 ```sh
@@ -202,45 +101,7 @@ update-ca-trust
 [文档](https://curl.haxx.se/docs/caextract.html) 
 
 
-## 安装核心工具
 
-```sh
-dnf install -y bash-completion \
-  bzip2 \
-  iotop iptraf-ng \
-  jq \
-  libuv lsof \
-  mtr net-tools \
-  traceroute \
-  uuid \
-  zstd \
-```
-
-
-## 安装常用工具
-
-```sh
-dnf install -y bind-utils \
-  dnsmasq \
-  dstat \
-  elfutils-libelf-devel \
-  lm_sensors \
-  mlocate \
-  nfs-utils nmap \
-  pcp \
-  rpcbind \
-  readline-devel \
-  rsync \
-  sysstat \
-  telnet \
-  usbutils \
-  vim \
-  vsftpd \
-  whois \
-
-yum-config-manager --add-repo=https://copr.fedorainfracloud.org/coprs/carlwgeorge/ripgrep/repo/epel-7/carlwgeorge-ripgrep-epel-7.repo
-dnf install -y ripgrep
-```
 
 
 ## 安装基本编译环境
@@ -269,16 +130,45 @@ dnf install -y \
   ncurses-devel \
   pam-devel pcre-devel \
   perl perl-devel perl-ExtUtils-Embed  \
+  screen.x86_64 \
   zlib-devel \
 ```
 
 
 
+## 系统性能调整
+
+```sh
+sh ./Linux/script/04.tune.sh
+```
+
+对于大内存服务器可以编辑以下文件设置小交换频率，
+```sh
+cat /proc/sys/vm/swappiness
+touch /etc/sysctl.d/99-sysctl.conf
+echo vm.swappiness=5 >> /etc/sysctl.d/99-sysctl.conf
+sysctl -p
+```
+
+（可选）16GB 内存以上可把 `/tmp` 挂接到内存中
+```sh
+systemctl enable tmp.mount
+systemctl start tmp.mount
+```
+
+
+## 常用配置设置
+
+```sh
+sh ./Linux/script/05.set-config.global.sh
+sh ./Linux/script/06.set-config.local.sh
+```
+
+
 ## 开启相关服务
 
-计划任务
 ```sh
-systemctl enable --now crond
+sh ./Linux/script/07.service.sh
 ```
 
 精确时钟同步服务（云服务器可跳过）
@@ -309,55 +199,6 @@ systemctl enable --now crond
 - 对于无法访问外网情况 编辑 `/etc/chrony.conf` 文件指定内网 `ntp` 服务器地址
 
 
-## 系统性能调整
-
-内核 TCP/IP、Socket参数调优
-```sh
-cat>>/etc/sysctl.conf<<EOF
-net.core.rmem_max = 838860
-net.core.somaxconn = 4096
-net.core.wmem_max = 8388608
-net.ipv4.ip_local_port_range = 10240 60999
-net.ipv4.tcp_keepalive_intvl = 15
-net.ipv4.tcp_keepalive_probes = 3
-net.ipv4.tcp_keepalive_time = 600
-net.ipv4.tcp_fin_timeout = 10
-net.ipv4.tcp_max_syn_backlog = 4096
-net.ipv4.tcp_max_tw_buckets = 65536
-net.ipv4.tcp_retries1 = 3
-net.ipv4.tcp_retries2 = 5
-net.ipv4.tcp_rmem = 4096 87380 8388608
-net.ipv4.tcp_syn_retries = 3
-net.ipv4.tcp_timestamps = 1
-net.ipv4.tcp_wmem = 4096 87380 8388608
-EOF
-
-sysctl -p
-```
-
-对于大内存服务器可以编辑以下文件设置小交换频率，
-```sh
-cat /proc/sys/vm/swappiness
-touch /etc/sysctl.d/99-sysctl.conf
-echo vm.swappiness=5 >> /etc/sysctl.d/99-sysctl.conf
-sysctl -p
-```
-
-（可选）16GB 内存以上可把 `/tmp` 挂接到内存中
-```sh
-systemctl enable tmp.mount
-systemctl start tmp.mount
-```
-
-
-## 常用配置设置
-
-```sh
-cd Linux/scripts
-./05.set-config.global.sh
-./06.set-config.local.sh
-```
-
 
 
 定时任务
@@ -370,32 +211,6 @@ cd Linux/scripts
   0 6 * * * /usr/bin/updatedb
   ```
 
-安装中文字体
-```sh
-dnf install -y wqy-unibit-fonts.noarch wqy-microhei-fonts.noarch
-```
-
-
-## 开启 TCP BBR 算法
-```sh
-echo net.core.default_qdisc=fq >> /etc/sysctl.conf
-echo net.ipv4.tcp_congestion_control=bbr >> /etc/sysctl.conf
-sysctl -p
-```
-
-检查
-```sh
-sysctl net.ipv4.tcp_available_congestion_control
-# 返回值应为：
-net.ipv4.tcp_available_congestion_control = cubic reno bbr 
-
-sysctl net.core.default_qdisc
-# 返回值应为：
-net.core.default_qdisc = fq
-
-lsmod | grep bbr
-# 返回值有 tcp_bbr 模块即说明bbr已启动
-```
 
 
 ## 设置服务器接受 ssh 公钥登录
@@ -434,9 +249,7 @@ echo 'ssh-ed25519 AAAAC...GMq ed25519 256-111017' >> /root/.ssh/authorized_keys
 设置服务器**仅**接受ssh公钥登录（可选）  
 **确认以上操作成功并且成功使用公钥登录系统后继续下面操作**
 ```sh
-cp /etc/ssh/sshd_config /etc/ssh/ori_sshd_config
-sed -i "s/^\s*\(PasswordAuthentication.*\)/# \1/" /etc/ssh/sshd_config
-echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config
+sh ./Linux/script/21.ssh-only-crt.sh
 ```
 
 
