@@ -234,7 +234,7 @@ set whichwrap+=<,>,h,l
 
 "Ignore case when searching
 set ignorecase
-"set incsearch
+set incsearch
 
 "Set magic on
 set magic
@@ -948,6 +948,10 @@ set pastetoggle=<F9>
 
 
 " 临时文件目录
-" mkdir -p ~/.vim/
-set directory=~/.vim//
+" 检查 ~/.vim/swp 目录是否存在，不存在则创建
+if !isdirectory(expand("~/.vim/swp"))
+    mkdir -p ~/.vim/swp
+    echomsg "Created directory: ~/.vim/swp"
+endif
+set directory^=~/.vim/swp//
 
