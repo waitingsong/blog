@@ -77,9 +77,17 @@ if exists("&autoread")
 endif
 
 "Have the mouse enabled all the time:
-"if exists("&mouse")
-"    set mouse=a
-"endif
+"The mouse can be enabled for different modes:
+"n Normal mode
+"v Visual mode
+"i Insert mode
+"c Command-line mode
+"h all previous modes when editing a help file
+"a all previous modes
+"r for |hit-enter| and |more-prompt| prompt
+if exists("&mouse")
+    set mouse=a
+endif
 
 "Set mapleader
 let mapleader = ","
@@ -229,7 +237,7 @@ set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
 "Ignore case when searching
-"set ignorecase
+set ignorecase
 set incsearch
 
 "Set magic on
@@ -941,3 +949,13 @@ set pastetoggle=<F9>
 " autocmd FileType javascript set formatprg=prettier-eslint\ --stdin
 " 保存时自动格式化
 " autocmd BufWritePre *.js :normal gggqG
+
+
+" 临时文件目录
+" 检查 ~/.vim/swp 目录是否存在，不存在则创建
+if !isdirectory(expand("~/.vim/swp"))
+    mkdir -p ~/.vim/swp
+    echomsg "Created directory: ~/.vim/swp"
+endif
+set directory^=~/.vim/swp//
+
