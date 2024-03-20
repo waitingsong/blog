@@ -1,7 +1,7 @@
 #!/bin/bash
 # Only for windows git bash
-# cp alias.completion.sh /etc/alias.completion.sh
-# echo "source /etc/alias.completion.sh"  >> /etc/profile
+# cp alias.completion.win.sh /etc/alias.completion.win.sh
+# echo "source /etc/alias.completion.win.sh"  >> /etc/profile
 
 __git_complete g git
 __git_complete gmg git_merge
