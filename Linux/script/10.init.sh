@@ -2,9 +2,11 @@
 set -e
 
 
+echo ==================== 安装语言包 ====================
 dnf install -y wget curl langpacks-zh_CN langpacks-en langpacks-en_GB pwgen
 
 
+echo ==================== 卸载相关软件 ====================
 dnf remove -y firewalld python-firewall firewalld-filesystem ntp \
   selinux-policy \
   docker \
@@ -25,28 +27,27 @@ SYSFONT="latarcyrheb-sun16"
 ' > /etc/locale.conf
 
 
-# 设置时区
+echo ==================== 设置时区 ====================
 timedatectl set-timezone Asia/Chongqing
 # or
 # cp /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
 
 
-# 安装 epel 仓库
+echo ==================== 安装 epel 仓库 ====================
+dnf install 'dnf-command(config-manager)'
 dnf config-manager --set-enabled crb
 dnf install -y \
-    https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm \
-    https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-9.noarch.rpm
+  https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm \
+  https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-9.noarch.rpm
 
-yum-config-manager --enable epel
-
-
+dnf config-manager --enable epel
 dnf install -y curl wget yum-utils
 
-# 设置 `rc.local` 自动执行
+echo ==================== 设置 `rc.local` 自动执行 ====================
 chmod +x /etc/rc.d/rc.local
 
 
-# 安装核心工具
+echo ========== 安装核心工具 ==========
 dnf install -y bash-completion \
   bzip2 \
   iotop iptraf-ng \
@@ -57,7 +58,7 @@ dnf install -y bash-completion \
   uuid \
   zstd
 
-# 安装常用工具
+echo ==================== 安装常用工具 ====================
 dnf install -y bind-utils \
   dnsmasq \
   dstat \
@@ -78,12 +79,14 @@ dnf install -y bind-utils \
   whois
 
 
-# 安装基本编译环境
-dnf groupinstall "Development Tools"
+echo ==================== 安装基本编译环境 ====================
+dnf groupinstall -y "Development Tools"
 
 
-
-# 升级 重启
+echo ==================== 升级 ====================
 dnf update -y
 dnf makecache
+
+echo     ==================== 重启 ====================
 reboot
+

@@ -1,5 +1,13 @@
 
 
+## 使用镜像库
+```sh
+npm -g config set registry https://registry.npmmirror.com
+npm -g config set disturl https://npmmirror.com/dist/
+npm -g config get disturl
+```
+
+
 ## 常用全局包
 ```sh
 

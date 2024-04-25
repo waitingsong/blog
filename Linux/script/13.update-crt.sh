@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-# 更新证书
+#
 
 # wget https://curl.haxx.se/ca/cacert.pem
 # cat ca.pem >> /etc/ssl/cert.pem
@@ -13,6 +13,7 @@ set -e
 # cp cacert.pem /usr/local/etc/openssl@3/certs
 # /usr/local/opt/openssl@3/bin/c_rehash
 
+echo ==================== 更新证书 ====================
 wget -O /etc/pki/ca-trust/source/anchors/ca-bundle.pem https://curl.haxx.se/ca/cacert.pem
 update-ca-trust
 
