@@ -1,8 +1,10 @@
 version: "3"
+# https://www.elastic.co/guide/en/elasticsearch/reference/8.13/bootstrap-checks.html
 # https://www.elastic.co/guide/en/elasticsearch/reference/8.13/docker.html#docker-cli-run-prod-mode
 # docker network create esnet
 # docker run -rm --name es01 --net esnet -p 9200:9200 -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:8.13.4
 # https://www.elastic.co/guide/en/elasticsearch/reference/8.13/docker.html#docker-compose-file
+# curl -u elastic:abc123  --cacert config/certs/ca/ca.crt https://localhost:9200
 
 services:
   setup:
@@ -70,12 +72,14 @@ services:
     depends_on:
       setup:
         condition: service_healthy
+    # image: docker.nju.edu.cn/library/elasticsearch:8.13.4
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
-      - esdata01:/usr/share/elasticsearch/data
+      - data01:/usr/share/elasticsearch/data
     ports:
       - ${ES_PORT}:9200
+      - 9300:9300
     environment:
       - node.name=es01
       - cluster.name=${CLUSTER_NAME}
@@ -94,6 +98,7 @@ services:
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
+      # - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     mem_limit: ${MEM_LIMIT}
     ulimits:
       memlock:
@@ -115,7 +120,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
-      - esdata02:/usr/share/elasticsearch/data
+      - data02:/usr/share/elasticsearch/data
     environment:
       - node.name=es02
       - cluster.name=${CLUSTER_NAME}
@@ -154,7 +159,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
-      - esdata03:/usr/share/elasticsearch/data
+      - data03:/usr/share/elasticsearch/data
     environment:
       - node.name=es03
       - cluster.name=${CLUSTER_NAME}
@@ -221,11 +226,11 @@ services:
 volumes:
   certs:
     driver: local
-  esdata01:
+  data01:
     driver: local
-  esdata02:
+  data02:
     driver: local
-  esdata03:
+  data03:
     driver: local
   kibanadata:
     driver: local
