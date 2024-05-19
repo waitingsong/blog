@@ -35,33 +35,32 @@ chmod 775 /data/docker
 - 安装校验
   ```sh
   systemctl enable --now docker
-  # 应该输出 active
-  systemctl is-active docker
+  systemctl is-active docker # 应该输出 active
   docker version
   ```
   输出
   ```
   Client: Docker Engine - Community
-  Version:           25.0.3
-  API version:       1.44
-  Go version:        go1.21.6
-  Git commit:        4debf41
-  Built:             Tue Feb  6 21:14:42 2024
+  Version:           26.1.0
+  API version:       1.45
+  Go version:        go1.21.9
+  Git commit:        9714adc
+  Built:             Mon Apr 22 17:08:20 2024
   OS/Arch:           linux/amd64
   Context:           default
 
   Server: Docker Engine - Community
   Engine:
-    Version:          25.0.3
-    API version:      1.44 (minimum version 1.24)
-    Go version:       go1.21.6
-    Git commit:       f417435
-    Built:            Tue Feb  6 21:13:06 2024
+    Version:          26.1.0
+    API version:      1.45 (minimum version 1.24)
+    Go version:       go1.21.9
+    Git commit:       c8af8eb
+    Built:            Mon Apr 22 17:06:36 2024
     OS/Arch:          linux/amd64
     Experimental:     false
   containerd:
-    Version:          1.6.28
-    GitCommit:        ae07eda36dd25f8a1b98dfbf587313b99c0190bb
+    Version:          1.6.31
+    GitCommit:        e377cd56a71523140ca6ae87e30244719194a521
   runc:
     Version:          1.1.12
     GitCommit:        v1.1.12-0-g51d5e94
@@ -105,7 +104,8 @@ sysctl -p
 ## 安装 Docker-Compose
 ```sh
 # curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
-curl -L "https://github.com/docker/compose/releases/download/2.24.5/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
+curl -L "https://github.com/docker/compose/releases/download/2.27.0/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
+curl -L "https://mirror.ghproxy.com/https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64" -o docker-compose
 
 sudo chown root:root ./docker-compose
 sudo chmod 755 ./docker-compose
