@@ -1,4 +1,3 @@
-version: "3"
 # https://www.elastic.co/guide/en/elasticsearch/reference/8.13/bootstrap-checks.html
 # https://www.elastic.co/guide/en/elasticsearch/reference/8.13/docker.html#docker-cli-run-prod-mode
 # docker network create esnet
