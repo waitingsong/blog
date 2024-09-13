@@ -21,15 +21,14 @@ npm i -g --loglevel=info \
   c8 \
   eslint \
   lerna \
-  nx \
   rollup \
   typescript \
-  node-gyp \
   zx \
   ts-node \
   tsx \
 
-
+  nx \
+  node-gyp \
   gitlab-var-helper-cli \
   myca-cli \
   form-data \
