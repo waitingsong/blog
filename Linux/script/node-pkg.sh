@@ -16,6 +16,7 @@ export NVM_DIR="$HOME/.nvm"
 # fi
 
 npm -g config set registry https://registry.npmmirror.com
+# npm -g config set registry https://mirrors.tencent.com/npm
 npm i -g nrm
 nrm use taobao
 
